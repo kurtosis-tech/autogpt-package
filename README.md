@@ -16,7 +16,7 @@ We use the `Redis` memory backend by default.
 Follow along the official guide [here](https://github.com/Significant-Gravitas/Auto-GPT#%EF%B8%8F-openai-api-keys-configuration-%EF%B8%8F)
 
 
-## Can I pass any other configuration
+## How to pass other configuration
 
 To pass any other configuration listed [here](https://github.com/Significant-Gravitas/Auto-GPT/blob/master/.env.template); pass the argument
 wrapped inside a dictionary called `env` for example to change `RESTRICT_TO_WORKSPACE` to `False` run using
