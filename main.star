@@ -1,4 +1,4 @@
-AUTOGPT_IMAGE="autogpt"
+AUTOGPT_IMAGE="h4ck3rk3y/autogpt"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
