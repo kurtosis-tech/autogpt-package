@@ -19,8 +19,9 @@ def run(plan, args):
                 "OPENAI_API_KEY": args["openai-api-key"],
                 "MEMORY_BACKEND": "redis",
                 "REDIS_HOST": redis_server["hostname"],
-                "REDIS_PORT": "6379",
+                "REDIS_PORT": str(redis_server["port"]),
                 "REDIS_PASSWORD": "",
+                "RESTRICT_TO_WORKSPACE": "False"
             }
         )
     )
