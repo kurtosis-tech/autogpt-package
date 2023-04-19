@@ -8,7 +8,7 @@ redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 def run(plan, args):
 
     if OPENAI_API_KEY_ARG not in args:
-        fail(f"{OPENAI_API_KEY_ARG} is a required argument that needs to be passed to this script")
+        fail("{0} is a required argument that needs to be passed to this script".format(OPENAI_API_KEY_ARG))
 
     redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
 
