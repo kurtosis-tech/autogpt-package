@@ -15,10 +15,10 @@ def run(plan, args):
             image = AUTOGPT_IMAGE,
             entrypoint = ["sleep", "9999999"],
             env_vars = {
-                "OPENAI_API_KEY": args["open-api-key"]
+                "OPENAI_API_KEY": args["open-api-key"],
                 "MEMORY_BACKEND": "redis",
                 "REDIS_HOST": redis_server["hostname"],
-                "REDIS_PORT": 6379,
+                "REDIS_PORT": "6379",
                 "REDIS_PASSWORD": "",
             }
         )
