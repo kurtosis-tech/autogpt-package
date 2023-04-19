@@ -5,8 +5,8 @@
 Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), simply run the following with your OpenAI API key:
 
 ```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>"}'
-(echo "python -m autogpt" && cat) | kurtosis service shell autogpt autogpt
+$ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>"}'
+$ (echo "python -m autogpt" && cat) | kurtosis service shell autogpt autogpt
 ```
 
 We use the `Redis` memory backend by default.
