@@ -6,7 +6,8 @@ Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), simpl
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>"}'
-echo "python -m autogpt" | kurtosis service shell autogpt autogpt
+kurtosis service shell autogpt autogpt
+python -m autogpt
 ```
 
 We use the `Redis` memory backend by default.
