@@ -1,6 +1,6 @@
 # Auto-GPT Package
 
-"Its like AutoGPt got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
+"It's like AutoGPT got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
 
 Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), simply run the following with your OpenAI API key:
 
