@@ -9,6 +9,9 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 (echo "python -m autogpt" && cat) | kurtosis service shell autogpt autogpt
 ```
 
+To run this on Kurtosis on GitPod click [here](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package). This doesn't
+require a local installation of Kurtosis.
+
 We use the `Redis` memory backend by default.
 
 ## How to get the OpenAI API Key
