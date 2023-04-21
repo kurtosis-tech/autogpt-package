@@ -29,17 +29,9 @@ def run(plan, args):
         "OPENAI_API_KEY": args[OPENAI_API_KEY_ARG],
     }
 
-<<<<<<< HEAD
     if "MEMORY_BACKEND" in args and args["MEMORY_BACKEND"] == "weaviate":
         if "USE_WEAVIATE_EMBEDDED" in args and ["USE_WEAVIATE_EMBEDDED"] == False:
             weaviate = plan.launch_weaviate(plan, args)
-=======
-    if ENV_VARS_ARG in args and "MEMORY_BACKEND" in args[ENV_VARS_ARG] and args[ENV_VARS_ARG]["MEMORY_BACKEND"] == "weaviate":
-        if "USE_WEAVIATE_EMBEDDED" in args[ENV_VARS_ARG] and args[ENV_VARS_ARG]["USE_WEAVIATE_EMBEDDED"] == False:
-            pass
-        else:
-            weaviate = launch_weaviate(plan, args)
->>>>>>> 616703e (host name doesnt work)
             env_vars["WEAVIATE_HOST"] = weaviate.ip_address
             env_vars["WEAVIATE_PORT"] = str(WEAVIATE_PORT)
             env_vars["WEAVIATE_PROTOCOL"] = WEAVIATE_PORT_PROTOCOL
@@ -79,7 +71,7 @@ def launch_weaviate(plan, args):
                 "AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED": 'true',
                 "PERSISTENCE_DATA_PATH": '/var/lib/weaviate',
                 "DEFAULT_VECTORIZER_MODULE": 'none',
-                "CLUSTER_HOSTNAME": 'weaviate'
+                "CLUSTER_HOSTNAME": 'node1'
             }
         )
     )
