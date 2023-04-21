@@ -29,16 +29,24 @@ def run(plan, args):
         "OPENAI_API_KEY": args[OPENAI_API_KEY_ARG],
     }
 
+<<<<<<< HEAD
     if "MEMORY_BACKEND" in args and args["MEMORY_BACKEND"] == "weaviate":
         if "USE_WEAVIATE_EMBEDDED" in args and ["USE_WEAVIATE_EMBEDDED"] == False:
             weaviate = plan.launch_weaviate(plan, args)
+=======
+    if ENV_VARS_ARG in args and "MEMORY_BACKEND" in args[ENV_VARS_ARG] and args[ENV_VARS_ARG]["MEMORY_BACKEND"] == "weaviate":
+        if "USE_WEAVIATE_EMBEDDED" in args[ENV_VARS_ARG] and args[ENV_VARS_ARG]["USE_WEAVIATE_EMBEDDED"] == False:
+            pass
+        else:
+            weaviate = launch_weaviate(plan, args)
+>>>>>>> 616703e (host name doesnt work)
             env_vars["WEAVIATE_HOST"] = weaviate.ip_address
-            env_vars["WEAVIATE_PORT"] = WEAVIATE_PORT
+            env_vars["WEAVIATE_PORT"] = str(WEAVIATE_PORT)
             env_vars["WEAVIATE_PROTOCOL"] = WEAVIATE_PORT_PROTOCOL
             env_vars["WEAVIATE_USERNAME"] = ""
             env_vars["WEAVIATE_PASSWORD"] = ""
             env_vars["WEAVIATE_API_KEY"] = ""            
-    if "MEMORY_BACKEND" in args[ENV_VARS_ARG] and args[ENV_VARS_ARG]["MEMORY_BACKEND"] == "local":
+    elif ENV_VARS_ARG in args and "MEMORY_BACKEND" in args[ENV_VARS_ARG] and args[ENV_VARS_ARG]["MEMORY_BACKEND"] == "local":
         env_vars["MEMORY_BACKEND"] = "local"
     else:
         redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
@@ -62,15 +70,16 @@ def launch_weaviate(plan, args):
     weaviate = plan.add_service(
         name = "weaviate",
         config = ServiceConfig(
+            image = WEAVIATE_IMAGE,
             ports = {
                 WEAVIATE_PORT_ID: PortSpec(number = WEAVIATE_PORT, transport_protocol = "TCP")
             },
             env_vars = {
-                QUERY_DEFAULTS_LIMIT: 25
-                AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-                PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-                DEFAULT_VECTORIZER_MODULE: 'none'
-                CLUSTER_HOSTNAME: 'node1'
+                "QUERY_DEFAULTS_LIMIT": str(25),
+                "AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED": 'true',
+                "PERSISTENCE_DATA_PATH": '/var/lib/weaviate',
+                "DEFAULT_VECTORIZER_MODULE": 'none',
+                "CLUSTER_HOSTNAME": 'weaviate'
             }
         )
     )
