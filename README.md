@@ -1,5 +1,7 @@
 # Auto-GPT Package
 
+![Run of the Auto-GPT Package](/run.gif)
+
 "It's like AutoGPT got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
 
 Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), simply run the following with your OpenAI API key:
@@ -9,14 +11,18 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 kurtosis service shell autogpt autogpt --exec "python -m autogpt"
 ```
 
+We use the `Redis` memory backend by default.
+
+## Run On GitPod in the browser
+
+
 To run this on Kurtosis on GitPod click [here](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package). This doesn't
 require a local installation of Kurtosis.
 
-We use the `Redis` memory backend by default.
 
 ## How to get the OpenAI API Key
 
-Follow along the official guide [here](https://github.com/Significant-Gravitas/Auto-GPT#%EF%B8%8F-openai-api-keys-configuration-%EF%B8%8F)
+Follow along the official guide [here](https://significant-gravitas.github.io/Auto-GPT/installation/#:~:text=%F0%9F%92%BE%20Installation-,%E2%9A%A0%EF%B8%8F%20OpenAI%20API%20Keys%20Configuration,-Get%20your%20OpenAI)
 
 
 ## How to pass other configuration
