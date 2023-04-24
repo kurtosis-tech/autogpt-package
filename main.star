@@ -41,7 +41,13 @@ def run(plan, args):
                     env_vars[weaviate_arg_key] = weaviate_arg_value
     elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "milvus":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-        launch_milvus(plan, args)
+        milvus_required_args = ["MILVUS_ADDR", "MILVUS_USERNAME", "MILVUS_PASSWORD"]
+        env_vars["MILVUS_SECURE"] = str(False)
+        env_vars["MILVUS_COLLECTION"] = "autogpt"
+        for env_var_key in milvus_required_args:
+            if env_var_key not in env_vars:
+                plan.print("{0} are required keys for Milvus. Seems like one of them is missing. We don't support spinning up Mivlus in Docker yet so your MILVUS_ADDR needs to be set to a cloud instance for now")
+                fail("{0} is a required env var that needs to be set for Milvus to work but was missing".format(env_var_key))
     elif env_vars.get("MEMORY_BACKEND", "redis") == "redis":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
         redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
@@ -94,6 +100,3 @@ def launch_weaviate(plan, args):
     )
 
     return weaviate
-
-def launch_milvus(plan, args):
-    pass
