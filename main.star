@@ -20,9 +20,9 @@ def run(plan, args):
     for env_var_key, env_var_value in args.items():
         env_vars[env_var_key] = str(env_var_value)
 
-    if "MEMORY_BACKEND" in args and args["MEMORY_BACKEND"] == "weaviate":
+    if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-        if "USE_WEAVIATE_EMBEDDED" in args and ["USE_WEAVIATE_EMBEDDED"] == "True":
+        if "USE_WEAVIATE_EMBEDDED" in env_vars and env_vars["USE_WEAVIATE_EMBEDDED"] == "True":
             plan.print("The weaviate backend will be running in embedded mode; not starting a separate container")
         else:
             weaviate = launch_weaviate(plan, args)
@@ -49,10 +49,10 @@ def run(plan, args):
                 plan.print("{0} are required keys for Milvus. Seems like one of them is missing. We don't support spinning up Mivlus in Docker yet so your MILVUS_ADDR needs to be set to a cloud instance for now")
                 fail("{0} is a required env var that needs to be set for Milvus to work but was missing".format(env_var_key))
     elif env_vars.get("MEMORY_BACKEND", "redis") == "redis":
+        env_vars["MEMORY_BACKEND"] = "redis"
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
         redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
         # redis has to run inside the enclave so we set it up for them and change the vars
-        env_vars["MEMORY_BACKEND"] = "redis"
         env_vars["REDIS_HOST"] = redis_server["hostname"]
         env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
         env_vars["REDIS_PASSWORD"] = ""
