@@ -27,11 +27,10 @@ Follow along the official guide [here](https://significant-gravitas.github.io/Au
 
 ## How to pass other configuration
 
-To pass any other configuration listed [here](https://github.com/Significant-Gravitas/Auto-GPT/blob/master/.env.template); pass the argument
-wrapped inside a dictionary called `env` for example to change `RESTRICT_TO_WORKSPACE` to `False` run using
+To pass any other configuration listed [here](https://github.com/Significant-Gravitas/Auto-GPT/blob/master/.env.template); pass the argument like you pass the `OPENAI_API_KEY`
 
 ```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>", "env": {"RESTRICT_TO_WORKSPACE": "False"}}'
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>", "RESTRICT_TO_WORKSPACE": "False"}'
 ```
 
 Note - This package spins up AutoGPT using the `Redis` backend. To use the local backend instead set `MEMORY_BACKEND` to `local` in `args.env`. For `pinecone` and `milvus` you will need to get API keys for it and pass it. `Weaviate` isn't supported yet. For any other backend apart from `redis`; the `Redis` server will still be spun up but won't be used.
