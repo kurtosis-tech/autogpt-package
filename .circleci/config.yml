@@ -23,7 +23,7 @@ jobs:
       - run: kurtosis engine restart
 
       - run: |
-          kurtosis run ${PWD} '{"OPENAI_API_KEY": }'
+          kurtosis run ${PWD} '{"OPENAI_API_KEY": "test"}'
   
 workflows:
   build:
