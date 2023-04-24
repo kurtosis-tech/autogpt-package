@@ -1,4 +1,4 @@
-AUTOGPT_IMAGE="h4ck3rk3y/autogpt"
+AUTOGPT_IMAGE="significantgravitas/auto-gpt:0.2.2"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 
 OPENAI_API_KEY_ARG="OPENAI_API_KEY"
