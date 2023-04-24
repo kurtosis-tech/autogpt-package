@@ -35,6 +35,12 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 
 Note - This package spins up AutoGPT using the `Redis` backend by default. To use the local backend instead set `MEMORY_BACKEND` to `local` in `args`. For `pinecone` and `milvus` you will need to get API keys for it and pass it. `Weaviate` is supported both locally & remotely.
 
+To run with an instance of Weaviate inside Docker run this using
+
+```bash
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>", "MEMORY_BACKEND": "weaviate"}'
+```
+
 ## Feedback or Questions?
 
 Let us know in our [Discord](https://discord.gg/eBWFjGtm) or on [Twitter @KurtosisTech](https://twitter.com/KurtosisTech)!
