@@ -33,6 +33,7 @@ def run(plan, args):
             weaviate_args_to_add_if_they_dont_exist["WEAVIATE_USERNAME"] = ""
             weaviate_args_to_add_if_they_dont_exist["WEAVIATE_PASSWORD"] = ""
             weaviate_args_to_add_if_they_dont_exist["WEAVIATE_API_KEY"] = ""
+            weaviate_args_to_add_if_they_dont_exist["MEMORY_INDEX"] = "AutoGPT"
             # if the user just passes "weaviate" without setting any args we just set everything up for them
             # otherwise the user might provide an online address or something which we preserve
             for weaviate_arg_key, weaviate_arg_value in weaviate_args_to_add_if_they_dont_exist.items():
