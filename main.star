@@ -38,9 +38,9 @@ def run(plan, args):
             for weaviate_arg_key, weaviate_arg_value in weaviate_args_to_add_if_they_dont_exist.items():
                 if weaviate_arg_key not in env_vars:
                     env_vars[weaviate_arg_key] = weaviate_arg_value
-    elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "local":
+    elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "milvus":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-    elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == ""
+        launch_milvus(plan, args)
     elif env_vars.get("MEMORY_BACKEND", "redis") == "redis":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
         redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
@@ -49,6 +49,8 @@ def run(plan, args):
         env_vars["REDIS_HOST"] = redis_server["hostname"]
         env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
         env_vars["REDIS_PASSWORD"] = ""
+    elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"]in ("local", "pinecone"):
+        plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
     else:
         plan.print("Memory backend needs to be one of redis, local, weaviate, milvus or piencone. We default to redis if nothing is specified. Got '{0}' which isn't a valid value".format(env_vars["MEMORY_BACKEND"]))
 
@@ -91,3 +93,6 @@ def launch_weaviate(plan, args):
     )
 
     return weaviate
+
+def launch_milvus(plan, args):
+    pass
