@@ -1,5 +1,7 @@
 # Auto-GPT Package
 
+![Run of the Auto-GPT Package](/run.gif)
+
 "It's like AutoGPT got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
 
 Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), simply run the following with your OpenAI API key:
