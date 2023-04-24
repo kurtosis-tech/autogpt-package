@@ -6,7 +6,7 @@ Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), simpl
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>"}'
-(echo "python -m autogpt" && cat) | kurtosis service shell autogpt autogpt
+kurtosis service shell autogpt autogpt --exec "python -m autogpt"
 ```
 
 To run this on Kurtosis on GitPod click [here](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package). This doesn't
