@@ -85,13 +85,14 @@ def run(plan, args):
 
     if 'ALLOWLISTED_PLUGINS' in env_vars:
         plugins_to_download = list()
-        for plugin in env_vars['ALLOWLISTED_PLUGINS'].split('/'):
+        for plugin in env_vars['ALLOWLISTED_PLUGINS'].split(','):
             if plugin in plugins.plugins_map:
                 plugins_to_download.append(plugins.plugins_map[plugin])
             else:
-                plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added", plugin, "https://github.com/kurtosis-tech/autogpt-package")
+                plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))
 
-            download_and_run_plugins(plan, plugins_to_download)
+            if plugins_to_download:
+                download_and_run_plugins(plan, plugins_to_download)
 
 
 
@@ -123,15 +124,16 @@ def download_and_run_plugins(plan, plugins_to_download):
         )
     )
     for plugin in plugins_to_download:
-        plugin_file_name = plug_url.split('/')
+        download_and_run_command = "cd /home/appuser/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], plugin["url"])
         plan.exec(
             service_name = "autogpt",
-            download_and_run_command = "cd /home/appuser/autogpt && curl -L -o ./plugins/{0} {1}".format(plugin["name"], plugin["url"]) 
             recipe = ExecRecipe(
-                command = ["/bin/sh", "-c", download_and_run_command]
+                command = ["/bin/sh", "-c", download_and_run_command],
             )
         )
     plan.exec(
         service_name = "autogpt",
-        command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps"]
+        recipe = ExecRecipe(
+            command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps"]
+        )
     )
