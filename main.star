@@ -9,6 +9,7 @@ WEAVIATE_PORT_ID = "http"
 WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
+plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 
 def run(plan, args):
 
@@ -82,6 +83,17 @@ def run(plan, args):
             )
         )
 
+    if 'ALLOWLISTED_PLUGINS' in env_vars:
+        plugins_to_download = list()
+        for plugin in env_vars['ALLOWLISTED_PLUGINS'].split('/'):
+            if plugin in plugins.plugins_map:
+                plugins_to_download.append(plugins.plugins_map[plugin])
+            else:
+                plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added", plugin, "https://github.com/kurtosis-tech/autogpt-package")
+
+            download_and_run_plugins(plan, plugins_to_download)
+
+
 
 def launch_weaviate(plan, args):
     weaviate = plan.add_service(
@@ -102,3 +114,24 @@ def launch_weaviate(plan, args):
     )
 
     return weaviate
+
+def download_and_run_plugins(plan, plugins_to_download):
+    plan.exec(
+        service_name = "autogpt",
+        recipe = ExecRecipe(
+            command = ["mkdir", "/home/appuser/autogpt/plugins"]
+        )
+    )
+    for plugin in plugins_to_download:
+        plugin_file_name = plug_url.split('/')
+        plan.exec(
+            service_name = "autogpt",
+            download_and_run_command = "cd /home/appuser/autogpt && curl -L -o ./plugins/{0} {1}".format(plugin["name"], plugin["url"]) 
+            recipe = ExecRecipe(
+                command = ["/bin/sh", "-c", download_and_run_command]
+            )
+        )
+    plan.exec(
+        service_name = "autogpt",
+        command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps"]
+    )
