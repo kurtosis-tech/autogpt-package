@@ -41,6 +41,19 @@ To run with an instance of Weaviate inside Docker run this using
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>", "MEMORY_BACKEND": "weaviate"}'
 ```
 
+## Development
+
+Kurtosis has an extension available on [VSCode](https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension) that allows you to develop Kurtosis
+Starlark more efficiently. While develeoping this package locally run using -
+
+```bash
+kurtosis run . --enclave autogpt '{"OPENAI_API_KEY": "<YOUR_API_KEY_HERE>", "MEMORY_BACKEND": "weaviate"}'
+```
+
+This would upload the local package and run it instead of pulling it from GitHub.
+
 ## Feedback or Questions?
 
 Let us know in our [Discord](https://discord.gg/eBWFjGtm) or on [Twitter @KurtosisTech](https://twitter.com/KurtosisTech)!
+
+Feel free to create an issue on GitHub if you have any bugs or feature requets.
