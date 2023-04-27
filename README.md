@@ -4,10 +4,15 @@
 
 "It's like AutoGPT got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
 
-Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), simply run the following with your OpenAI API key:
+Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), first start AutoGPT (replacing `YOUR_API_KEY_HERE` with your API key):
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
+```
+
+Then start interacting with AutoGPT:
+
+```bash
 kurtosis service shell autogpt autogpt --exec "python -m autogpt"
 ```
 
