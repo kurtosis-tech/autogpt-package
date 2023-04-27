@@ -24,6 +24,8 @@ def run(plan, args):
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
         if "USE_WEAVIATE_EMBEDDED" in env_vars and env_vars["USE_WEAVIATE_EMBEDDED"] == "True":
             plan.print("The weaviate backend will be running in embedded mode; not starting a separate container")
+        elif "WEAVIATE_HOST" in env_vars and "WEAVIATE_PORT" in env_vars:
+            plan.print("We're using the Weaviate at {}:{}. Please make sure that you have also provided the right values for WEAVIATE_USERNAME, WEAVIATE_PASSWORD, WEAVIATE_API_KEY as needed".format(env_vars["WEAVIATE_HOST"], env_vars["WEAVIATE_PORT"]))
         else:
             weaviate = launch_weaviate(plan, args)
             weaviate_args_to_add_if_they_dont_exist = {}
