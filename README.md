@@ -11,6 +11,9 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 kurtosis service shell autogpt autogpt --exec "python -m autogpt"
 ```
 
+If `kurtosis service shell autogpt autogpt --exec "python -m autogpt"` breaks for you then you might be on an older version of Kurtosis. Please use
+`echo "python -m autogpt" && cat) | kurtosis service shell autogpt autogpt` instead.
+
 We use the `Redis` memory backend by default.
 
 ## Run On GitPod in the browser
