@@ -16,8 +16,11 @@ Then start interacting with AutoGPT:
 kurtosis service shell autogpt autogpt --exec "python -m autogpt"
 ```
 
-If `kurtosis service shell autogpt autogpt --exec "python -m autogpt"` breaks for you then you might be on an older version of Kurtosis. Please use
-`echo "python -m autogpt" && cat) | kurtosis service shell autogpt autogpt` instead.
+If `kurtosis service shell autogpt autogpt --exec "python -m autogpt"` breaks for you then you might be on an older version of Kurtosis. Please use instead:
+
+```bash
+echo "python -m autogpt" && cat | kurtosis service shell autogpt autogpt
+```
 
 We use the `Redis` memory backend by default.
 
