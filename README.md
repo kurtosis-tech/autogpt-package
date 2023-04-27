@@ -16,8 +16,7 @@ We use the `Redis` memory backend by default.
 ## Run On GitPod in the browser
 
 
-To run this on Kurtosis on GitPod click [here](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package). This doesn't
-require a local installation of Kurtosis.
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package)
 
 
 ## How to get the OpenAI API Key
