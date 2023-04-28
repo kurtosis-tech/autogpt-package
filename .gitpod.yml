@@ -4,7 +4,6 @@ image:
 tasks:
   - name: Setup Kurtosis
     command: |
-      kurtosis engine restart
       kurtosis run github.com/fake-package/fake-package-purely-for-analytics || kurtosis clean -a
       code README.md
       source <(kurtosis completion bash)
