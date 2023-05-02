@@ -67,6 +67,8 @@ We will download and install the package for you! As of now the following plugin
 
 To add support for more plugins simply create an issue or create a PR adding an entry to `plugins.star`
 
+NOTE - If you run AutoGPT with plugins; we are using our own image published at `h4ck3rk3y/autogpt` whiile we wait for `SignificantGravitas` to release a new image greater than `0.2.2`.
+
 ## Development
 
 Kurtosis has an extension available on [VSCode](https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension) that allows you to develop Kurtosis
