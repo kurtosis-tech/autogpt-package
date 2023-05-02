@@ -51,6 +51,24 @@ To run with an instance of Weaviate inside Docker run this using
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "weaviate"}'
 ```
 
+## How to get plugins to work
+
+We support the `ALLOWLISTED_PLUGINS` configuration flag that `AutoGPT` ships with. To run the `twitter` plugin do the following - 
+
+```bash
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "twitter"}'
+```
+
+We will download and install the package for you! As of now the following plugins are supported
+
+- Twitter
+- Email
+- AutoGPTGoogleAnalyticsPlugin
+
+To add support for more plugins simply create an issue or create a PR adding an entry to `plugins.star`
+
+NOTE - If you run AutoGPT with plugins; we are using our own image published at `h4ck3rk3y/autogpt` whiile we wait for `SignificantGravitas` to release a new image greater than `0.2.2`.
+
 ## Development
 
 Kurtosis has an extension available on [VSCode](https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension) that allows you to develop Kurtosis

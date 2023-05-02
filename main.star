@@ -2,6 +2,10 @@ AUTOGPT_IMAGE="significantgravitas/auto-gpt:0.2.2"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 WEAVIATE_IMAGE="semitechnologies/weaviate:1.18.3"
 
+# The Auto-GPT team is being slow with releasing the new code on stable
+# using our own image for plugins in the meantime
+AUTOGPT_IMAGE_FOR_PLUGINS="h4ck3rk3y/autogpt"
+
 OPENAI_API_KEY_ARG="OPENAI_API_KEY"
 
 WEAVIATE_PORT = 8080
@@ -9,6 +13,7 @@ WEAVIATE_PORT_ID = "http"
 WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
+plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 
 def run(plan, args):
 
@@ -65,10 +70,16 @@ def run(plan, args):
 
     plan.print("Starting AutoGpt with environment variables set to\n{0}".format(env_vars))
 
+    # using my own image while I wait for the AutoGPT team to release
+    # a stable image
+    image = AUTOGPT_IMAGE
+    if 'ALLOWLISTED_PLUGINS' in env_vars:
+        image = AUTOGPT_IMAGE_FOR_PLUGINS
+
     plan.add_service(
         name = "autogpt",
         config = ServiceConfig(
-            image = AUTOGPT_IMAGE,
+            image = image,
             entrypoint = ["sleep", "9999999"],
             env_vars = env_vars,
         )
@@ -81,6 +92,18 @@ def run(plan, args):
                 command = ["pip", "install", "weaviate-client"]
             )
         )
+
+    if 'ALLOWLISTED_PLUGINS' in env_vars:
+        plugins_to_download = list()
+        for plugin in env_vars['ALLOWLISTED_PLUGINS'].split(','):
+            if plugin in plugins.plugins_map:
+                plugins_to_download.append(plugins.plugins_map[plugin])
+            else:
+                plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))
+
+            if plugins_to_download:
+                download_and_run_plugins(plan, plugins_to_download)
+
 
 
 def launch_weaviate(plan, args):
@@ -102,3 +125,26 @@ def launch_weaviate(plan, args):
     )
 
     return weaviate
+
+def download_and_run_plugins(plan, plugins_to_download):
+    plan.exec(
+        service_name = "autogpt",
+        recipe = ExecRecipe(
+            command = ["mkdir", "/app/autogpt/plugins"]
+        )
+    )
+    for plugin in plugins_to_download:
+        download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], plugin["url"])
+        plan.exec(
+            service_name = "autogpt",
+            recipe = ExecRecipe(
+                command = ["/bin/sh", "-c", download_and_run_command],
+            )
+        )
+    plan.exec(
+        service_name = "autogpt",
+        recipe = ExecRecipe(
+            # running this in the background so that it exits
+            command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps &"]
+        )
+    )
