@@ -53,21 +53,25 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 
 ## How to get plugins to work
 
-We support the `ALLOWLISTED_PLUGINS` configuration flag that `AutoGPT` ships with. To run the `twitter` plugin do the following - 
+Kurtosis supports the `ALLOWLISTED_PLUGINS` configuration flag that `AutoGPT` ships with. For example, to run the `twitter` plugin do the following:
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "twitter"}'
 ```
 
-We will download and install the package for you! As of now the following plugins are supported
+Under the hood, Kurtosis will download and install the package for you! As of now the following plugins are supported:
 
-- Twitter
-- Email
-- AutoGPTGoogleAnalyticsPlugin
+- [Twitter](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/twitter)
+- [Email](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/email)
+- [SceneX](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/scenex)
+- [Bing Search](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/bing_search)
+- [News Search](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/news_search)
+- [Wikipedia Search](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/wikipedia_search)
+- [AutoGPTGoogleAnalyticsPlugin](https://github.com/isaiahbjork/Auto-GPT-Google-Analytics-Plugin)
 
-To add support for more plugins simply create an issue or create a PR adding an entry to `plugins.star`
+To add support for more plugins simply create an issue or create a PR adding an entry to [`plugins.star`](https://github.com/kurtosis-tech/autogpt-package/blob/main/plugins.star).
 
-NOTE - If you run AutoGPT with plugins; we are using our own image published at `h4ck3rk3y/autogpt` whiile we wait for `SignificantGravitas` to release a new image greater than `0.2.2`.
+NOTE - If you run AutoGPT with plugins; we are using our own image published at `h4ck3rk3y/autogpt`. We are tracking the update to use the official 0.3.0 image in: https://github.com/kurtosis-tech/autogpt-package/issues/27.
 
 ## Development
 
