@@ -1,6 +1,10 @@
-AUTOGPT_IMAGE="significantgravitas/auto-gpt:v0.3.0"
+AUTOGPT_IMAGE="significantgravitas/auto-gpt:0.2.2"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 WEAVIATE_IMAGE="semitechnologies/weaviate:1.18.3"
+
+# The Auto-GPT team is being slow with releasing the new code on stable
+# using our own image for plugins in the meantime
+AUTOGPT_IMAGE_FOR_PLUGINS="h4ck3rk3y/autogpt"
 
 OPENAI_API_KEY_ARG="OPENAI_API_KEY"
 
@@ -66,10 +70,16 @@ def run(plan, args):
 
     plan.print("Starting AutoGpt with environment variables set to\n{0}".format(env_vars))
 
+    # using my own image while I wait for the AutoGPT team to release
+    # a stable image
+    image = AUTOGPT_IMAGE
+    if 'ALLOWLISTED_PLUGINS' in env_vars:
+        image = AUTOGPT_IMAGE_FOR_PLUGINS
+
     plan.add_service(
         name = "autogpt",
         config = ServiceConfig(
-            image = AUTOGPT_IMAGE,
+            image = image,
             entrypoint = ["sleep", "9999999"],
             env_vars = env_vars,
         )
