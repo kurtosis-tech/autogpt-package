@@ -130,11 +130,11 @@ def download_and_run_plugins(plan, plugins_to_download):
     plan.exec(
         service_name = "autogpt",
         recipe = ExecRecipe(
-            command = ["mkdir", "/home/appuser/autogpt/plugins"]
+            command = ["mkdir", "/app/autogpt/plugins"]
         )
     )
     for plugin in plugins_to_download:
-        download_and_run_command = "cd /home/appuser/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], plugin["url"])
+        download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], plugin["url"])
         plan.exec(
             service_name = "autogpt",
             recipe = ExecRecipe(
