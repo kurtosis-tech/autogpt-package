@@ -1,4 +1,4 @@
-AUTOGPT_IMAGE="significantgravitas/auto-gpt:0.3.0"
+AUTOGPT_IMAGE="significantgravitas/auto-gpt:latest"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 WEAVIATE_IMAGE="semitechnologies/weaviate:1.18.3"
 
