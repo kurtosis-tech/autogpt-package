@@ -144,6 +144,7 @@ def download_and_run_plugins(plan, plugins_to_download):
     plan.exec(
         service_name = "autogpt",
         recipe = ExecRecipe(
-            command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps"]
+            # running this in the background so that it exits
+            command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps &"]
         )
     )
