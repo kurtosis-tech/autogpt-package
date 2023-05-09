@@ -94,6 +94,13 @@ def run(plan, args):
         )
 
     if 'ALLOWLISTED_PLUGINS' in env_vars:
+        plan.exec(
+            service_name = "autogpt",
+            recipe = ExecRecipe(
+                command = ["mkdir", "/app/autogpt/plugins"]
+            )
+        )
+
         plugins_to_download = list()
         for plugin in env_vars['ALLOWLISTED_PLUGINS'].split(','):
             if plugin in plugins.plugins_map:
@@ -127,12 +134,6 @@ def launch_weaviate(plan, args):
     return weaviate
 
 def download_and_run_plugins(plan, plugins_to_download):
-    plan.exec(
-        service_name = "autogpt",
-        recipe = ExecRecipe(
-            command = ["mkdir", "/app/autogpt/plugins"]
-        )
-    )
     for plugin in plugins_to_download:
         download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], plugin["url"])
         plan.exec(
