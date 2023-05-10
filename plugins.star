@@ -1,14 +1,25 @@
-STDLIB_OF_PLUGINS = "https://github.com/Significant-Gravitas/Auto-GPT-Plugins/archive/refs/heads/master.zip"
+MASTER_BRANCH = "master"
+SIGNIFICANT_GRAVITAS_AUTHOR = "Significant-Gravitas"
 STDLIB_OF_PLUGINS_FILENAME = "Auto-GPT-Plugins.zip"
 
 plugins_map = {
-    "twitter": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "email": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "scenex": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "bing_search": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "news_search": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "wikipedia_search": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "api_tools": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "random_values": {"url": STDLIB_OF_PLUGINS, "name": STDLIB_OF_PLUGINS_FILENAME},
-    "AutoGPTGoogleAnalyticsPlugin": {"url": "https://github.com/isaiahbjork/Auto-GPT-Google-Analytics-Plugin.git", "name": "AutoGPTGoogleAnalyticsPlugin.zip"}
+    "twitter": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "email": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "scenex": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "bing_search": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "news_search": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "wikipedia_search": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "api_tools": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "random_values": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": SIGNIFICANT_GRAVITAS_AUTHOR, "repository-name": "Auto-GPT-Plugins", "branch": MASTER_BRANCH},
+    "AutoGPTGoogleAnalyticsPlugin": {"name": "AutoGPTGoogleAnalyticsPlugin", "author": "isaiahbjork", "repository-name": "Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
 }
+
+def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_author_to_use):
+    author = plugin_data["author"]
+    if plugin_author_to_use:
+        author = plugin_author_to_use
+    branch = plugin_data["branch"]
+    if plugin_branch_to_use:
+        branch = plugin_branch_to_use
+    repo = plugin_data["repository-name"]
+    return "https://github.com/{0}/{1}/archive/refs/heads/{2}.zip".format(author, repo, branch)

@@ -12,6 +12,8 @@ WEAVIATE_PORT = 8080
 WEAVIATE_PORT_ID = "http"
 WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 
+ARGS_TO_SKIP_FOR_ENV_VARS = ["__plugin_branch_to_use", "__plugin_author_to_use"]
+
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 
@@ -22,7 +24,18 @@ def run(plan, args):
 
     env_vars = {}
 
+    # this is purely for CI test of plugins
+    # replaces the download url from master.zip to the name of the branch
+    # this does a mass replace
+    plugin_branch_to_use = None
+    plugin_author_to_use = None
+    if "__plugin_branch_to_use" in args:
+        plugin_branch_to_use = args["__plugin_branch_to_use"]
+        plugin_author_to_use = args["__plugin_author_to_use"]
+
     for env_var_key, env_var_value in args.items():
+        if env_var_key in ARGS_TO_SKIP_FOR_ENV_VARS:
+            continue
         env_vars[env_var_key] = str(env_var_value)
 
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
@@ -32,7 +45,7 @@ def run(plan, args):
         elif "WEAVIATE_HOST" in env_vars and "WEAVIATE_PORT" in env_vars:
             plan.print("We're using the Weaviate at {}:{}. Please make sure that you have also provided the right values for WEAVIATE_USERNAME, WEAVIATE_PASSWORD, WEAVIATE_API_KEY as needed".format(env_vars["WEAVIATE_HOST"], env_vars["WEAVIATE_PORT"]))
         else:
-            weaviate = launch_weaviate(plan, args)
+            weaviate = launch_weaviate(plan)
             weaviate_args_to_add_if_they_dont_exist = {}
             weaviate_args_to_add_if_they_dont_exist["WEAVIATE_HOST"] = weaviate.ip_address
             weaviate_args_to_add_if_they_dont_exist["WEAVIATE_PORT"] = str(WEAVIATE_PORT)
@@ -85,7 +98,7 @@ def run(plan, args):
         )
     )
 
-    if "MEMORY_BACKEND" in args and args["MEMORY_BACKEND"] == "weaviate":
+    if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.exec(
             service_name = "autogpt",
             recipe = ExecRecipe(
@@ -102,18 +115,23 @@ def run(plan, args):
         )
 
         plugins_to_download = list()
+        plugins_already_in_download_list = list()
         for plugin in env_vars['ALLOWLISTED_PLUGINS'].split(','):
             if plugin in plugins.plugins_map:
-                plugins_to_download.append(plugins.plugins_map[plugin])
+                plugin = plugins.plugins_map[plugin]
+                if plugin["name"] in plugins_already_in_download_list:
+                    continue
+                plugins_to_download.append(plugin)
+                plugins_already_in_download_list.append(plugin["name"])
             else:
-                plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))
+                plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))            
 
-            if plugins_to_download:
-                download_and_run_plugins(plan, plugins_to_download)
+        if plugins_to_download:
+            download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use, plugin_author_to_use)
 
 
 
-def launch_weaviate(plan, args):
+def launch_weaviate(plan):
     weaviate = plan.add_service(
         name = "weaviate",
         config = ServiceConfig(
@@ -133,9 +151,10 @@ def launch_weaviate(plan, args):
 
     return weaviate
 
-def download_and_run_plugins(plan, plugins_to_download):
+def download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use=None, plugin_author_to_use = None):
     for plugin in plugins_to_download:
-        download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], plugin["url"])
+        url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_author_to_use)
+        download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], url)
         plan.exec(
             service_name = "autogpt",
             recipe = ExecRecipe(
