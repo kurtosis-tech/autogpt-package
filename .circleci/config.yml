@@ -41,7 +41,6 @@ jobs:
 
   run_starlark_windows:
     executor: win/default
-    resource_class: xlarge
     steps:
 
       # Set up Kurtosis
