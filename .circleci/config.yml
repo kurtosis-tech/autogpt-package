@@ -1,5 +1,9 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.10.1
+  kurtosis-docs-checker: kurtosis-tech/docs-checker@0.2.3
+
 executors:
   ubuntu_vm:
     machine:
