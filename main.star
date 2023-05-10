@@ -117,7 +117,7 @@ def run(plan, args):
         plugins_to_download = list()
         for plugin in env_vars['ALLOWLISTED_PLUGINS'].split(','):
             if plugin in plugins.plugins_map:
-                plugins_to_download.append(plugins.plugins_map[plugin], plugin_branch_to_use, plugin_origin_to_use)
+                plugins_to_download.append(plugins.plugins_map[plugin], plugin_branch_to_use, plugin_author_to_use)
             else:
                 plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))
 
