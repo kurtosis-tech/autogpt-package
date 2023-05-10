@@ -13,7 +13,7 @@ parameters:
   # To enable/disabled the check_latest_version workflow execution which will be triggered by this scheduled pipeline: https://app.circleci.com/settings/project/github/kurtosis-tech/autogpt-package/triggers
   should-enable-nightly-plugin-check:
     type: boolean
-    default: true
+    default: false
   should-enable-run-starlark-workflow:
     type: boolean
     default: true    
