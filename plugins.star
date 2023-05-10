@@ -17,8 +17,8 @@ plugins_map = {
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
     repo = plugin_data["repository"]
     if plugin_repo_to_use:
-        author = plugin_repo_to_use
+        repo = plugin_repo_to_use
     branch = plugin_data["branch"]
     if plugin_branch_to_use:
         branch = plugin_branch_to_use
-    return "https://github.com/{0}/archive/refs/heads/{2}.zip".format(repo, branch)
+    return "https://github.com/{0}/archive/refs/heads/{1}.zip".format(repo, branch)
