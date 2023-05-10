@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.10.1
   kurtosis-docs-checker: kurtosis-tech/docs-checker@0.2.3
+  win: circleci/windows@5.0 # The Windows orb gives you everything you need to start using the Windows executor.  
 
 executors:
   ubuntu_vm:
@@ -37,6 +38,26 @@ jobs:
 
       - run: |
           kurtosis run ${PWD} '{"OPENAI_API_KEY": "test"}'
+
+  run_starlark_windows:
+    executor: win/default
+    resource_class: xlarge
+    steps:
+
+      # Set up Kurtosis
+      - run: |
+          echo "deb [trusted=yes] https://apt.fury.io/kurtosis-tech/ /" | sudo tee /etc/apt/sources.list.d/kurtosis.list
+          sudo apt update
+          sudo apt install kurtosis-cli
+      - checkout
+
+      - run: kurtosis analytics disable
+
+      - run: kurtosis engine restart
+
+      - run: |
+          kurtosis run ${PWD} '{"OPENAI_API_KEY": "test"}'
+
   
   run_package_with_plugins_nightly:
     executor: ubuntu_vm
@@ -75,6 +96,10 @@ workflows:
       - run_starlark:
           filters:
             branches:
+              ignore:
+      - run_starlark_windows:
+          filters:
+            brances:
               ignore:
   run_package_with_plugins_nightly:
     when: << pipeline.parameters.should-enable-nightly-plugin-check >>
