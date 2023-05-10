@@ -15,4 +15,4 @@ plugins_map = {
 }
 
 def get_plugin_url(plugin_data):
-    return "https://github.com/{0}/{1}/archive/refs/heads/{2}.zip".format(plugin["author"], plugin["repository-name"], plugin["branch"])
+    return "https://github.com/{0}/{1}/archive/refs/heads/{2}.zip".format(plugin_data["author"], plugin_data["repository-name"], plugin_data["branch"])
