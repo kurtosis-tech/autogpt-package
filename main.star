@@ -12,7 +12,7 @@ WEAVIATE_PORT = 8080
 WEAVIATE_PORT_ID = "http"
 WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 
-ARGS_TO_SKIP_FOR_ENV_VARS = ["__plugin_branch_to_use", "__plugin_author_to_use"]
+ARGS_TO_SKIP_FOR_ENV_VARS = ["__plugin_branch_to_use", "__plugin_repo_to_use"]
 
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
@@ -28,11 +28,11 @@ def run(plan, args):
     # replaces the download url from master.zip to the name of the branch
     # this does a mass replace
     plugin_branch_to_use = None
-    plugin_author_to_use = None
+    plugin_repo_to_use = None
     if "__plugin_branch_to_use" in args:
         plugin_branch_to_use = args["__plugin_branch_to_use"]
-    if "__plugin_author_to_use" in args:
-        plugin_author_to_use = args["__plugin_author_to_use"]
+    if "__plugin_repo_to_use" in args:
+        plugin_repo_to_use = args["__plugin_repo_to_use"]
 
     for env_var_key, env_var_value in args.items():
         if env_var_key in ARGS_TO_SKIP_FOR_ENV_VARS:
@@ -128,7 +128,7 @@ def run(plan, args):
                 plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))            
 
         if plugins_to_download:
-            download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use, plugin_author_to_use)
+            download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
 
 
 
@@ -152,9 +152,9 @@ def launch_weaviate(plan):
 
     return weaviate
 
-def download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use=None, plugin_author_to_use = None):
+def download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
-        url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_author_to_use)
+        url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_repo_to_use)
         download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], url)
         plan.exec(
             service_name = "autogpt",
