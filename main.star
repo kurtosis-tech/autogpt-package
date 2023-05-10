@@ -130,7 +130,8 @@ def run(plan, args):
                 plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))            
 
         if plugins_to_download:
-            download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
+            download_plugins(plan, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
+            install_plugins(plan)
 
 
 
@@ -154,7 +155,7 @@ def launch_weaviate(plan):
 
     return weaviate
 
-def download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
+def download_plugins(plan, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
         url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_repo_to_use)
         download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], url)
@@ -166,6 +167,7 @@ def download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use=Non
         )
 
 
+def install_plugins(plan):
     # AutoGPT spins up a terminal that doesn't have the right exit code and Exec Doesn't like that
     # we skip the check
     result = plan.exec(
