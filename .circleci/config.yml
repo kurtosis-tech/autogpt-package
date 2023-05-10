@@ -75,6 +75,6 @@ workflows:
   run_package_with_plugins_nightly:
     when: << pipeline.parameters.should-enable-nightly-plugin-check >>
     jobs:
-      - check_all_nightly:
+      - run_package_with_plugins_nightly:
           context:
             - slack-secrets
