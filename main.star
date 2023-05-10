@@ -31,6 +31,7 @@ def run(plan, args):
     plugin_author_to_use = None
     if "__plugin_branch_to_use" in args:
         plugin_branch_to_use = args["__plugin_branch_to_use"]
+    if "__plugin_author_to_use" in args:
         plugin_author_to_use = args["__plugin_author_to_use"]
 
     for env_var_key, env_var_value in args.items():
