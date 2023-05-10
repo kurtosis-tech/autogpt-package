@@ -25,6 +25,28 @@ jobs:
       - run: |
           kurtosis run ${PWD} '{"OPENAI_API_KEY": "test"}'
   
+  run_package_with_plugins:
+    executor: ubuntu_vm
+    resource_class: xlarge
+    steps:
+
+      # Set up Kurtosis
+      - run: |
+          echo "deb [trusted=yes] https://apt.fury.io/kurtosis-tech/ /" | sudo tee /etc/apt/sources.list.d/kurtosis.list
+          sudo apt update
+          sudo apt install kurtosis-cli
+      - checkout
+
+      - run: kurtosis analytics disable
+
+      - run: kurtosis engine restart
+
+      - run: |
+          plugins_to_test=("twitter news_search bing_search")
+          for plugin in $(plugins_to_test); do
+            kurtosis run ${PWD} '{"OPENAI_API_KEY": "test", "ALLOWLISTED_PLUGINS": "$plugin"}'
+          done
+  
 workflows:
   build:
     jobs:
