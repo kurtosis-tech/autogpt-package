@@ -99,7 +99,7 @@ workflows:
               ignore:
       - run_starlark_windows:
           filters:
-            brances:
+            branches:
               ignore:
   run_package_with_plugins_nightly:
     when: << pipeline.parameters.should-enable-nightly-plugin-check >>
