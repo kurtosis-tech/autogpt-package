@@ -1,9 +1,22 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.10.1
+  kurtosis-docs-checker: kurtosis-tech/docs-checker@0.2.3
+
 executors:
   ubuntu_vm:
     machine:
       image: ubuntu-2004:202201-02
+
+parameters:
+  # To enable/disabled the check_latest_version workflow execution which will be triggered by this scheduled pipeline: https://app.circleci.com/settings/project/github/kurtosis-tech/autogpt-package/triggers
+  should-enable-nightly-plugin-check:
+    type: boolean
+    default: false
+  should-enable-run-starlark-workflow:
+    type: boolean
+    default: true    
 
 jobs:
   run_starlark:
@@ -25,11 +38,47 @@ jobs:
       - run: |
           kurtosis run ${PWD} '{"OPENAI_API_KEY": "test"}'
   
+  run_package_with_plugins_nightly:
+    executor: ubuntu_vm
+    resource_class: xlarge
+    steps:
+
+      # Set up Kurtosis
+      - run: |
+          echo "deb [trusted=yes] https://apt.fury.io/kurtosis-tech/ /" | sudo tee /etc/apt/sources.list.d/kurtosis.list
+          sudo apt update
+          sudo apt install kurtosis-cli
+      - checkout
+
+      - run: kurtosis analytics disable
+
+      - run: kurtosis engine restart
+
+      - run: |
+          plugins_to_test=("twitter news_search bing_search")
+          for plugin in $(plugins_to_test); do
+            kurtosis run ${PWD} '{"OPENAI_API_KEY": "test", "ALLOWLISTED_PLUGINS": "$plugin"}'
+          done
+
+      # this step will be always run even if the previous step fails, some steps are configured this way. More info here: https://circleci.com/docs/configuration-reference#steps
+      - slack/notify:
+          channel: engineering
+          event: fail
+          # You can preview this template and know more about templates here: https://github.com/CircleCI-Public/slack-orb/wiki#templates
+          template: basic_fail_1      
+
 workflows:
   build:
+    when: << pipeline.parameters.should-enable-run-starlark-workflow >>
     jobs:
       # -- PR check jobs ------------------------------------------
       - run_starlark:
           filters:
             branches:
               ignore:
+  run_package_with_plugins_nightly:
+    when: << pipeline.parameters.should-enable-nightly-plugin-check >>
+    jobs:
+      - run_package_with_plugins_nightly:
+          context:
+            - slack-secrets
