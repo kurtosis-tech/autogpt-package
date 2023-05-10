@@ -14,5 +14,12 @@ plugins_map = {
     "AutoGPTGoogleAnalyticsPlugin": {"name": "AutoGPTGoogleAnalyticsPlugin", "author": "isaiahbjork", "repository-name": "Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
 }
 
-def get_plugin_url(plugin_data):
-    return "https://github.com/{0}/{1}/archive/refs/heads/{2}.zip".format(plugin_data["author"], plugin_data["repository-name"], plugin_data["branch"])
+def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_author_to_use):
+    author = plugin_data["author"]
+    if plugin_author_to_use:
+        author = plugin_author_to_use
+    branch = plugin_data["branch"]
+    if plugin_branch_to_use:
+        branch = plugin_branch_to_use
+    repo = plugin_data["repository-name"]
+    return "https://github.com/{0}/{1}/archive/refs/heads/{2}.zip".format(author, repo, branch)
