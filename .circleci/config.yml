@@ -25,7 +25,7 @@ jobs:
       - run: |
           kurtosis run ${PWD} '{"OPENAI_API_KEY": "test"}'
   
-  run_package_with_plugins:
+  run_package_with_plugins_nightly:
     executor: ubuntu_vm
     resource_class: xlarge
     steps:
@@ -46,7 +46,7 @@ jobs:
           for plugin in $(plugins_to_test); do
             kurtosis run ${PWD} '{"OPENAI_API_KEY": "test", "ALLOWLISTED_PLUGINS": "$plugin"}'
           done
-  
+
 workflows:
   build:
     jobs:
