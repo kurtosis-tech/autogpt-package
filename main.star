@@ -14,6 +14,8 @@ WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 
 ARGS_TO_SKIP_FOR_ENV_VARS = ["__plugin_branch_to_use", "__plugin_repo_to_use"]
 
+AUTOGPT_INITIAL_PROMPT = "\x1b[32mWelcome to Auto-GPT! \x1b[0m run with '--help' for more information.\n\x1b[32mCreate an AI-Assistant: \x1b[0m input '--manual' to enter manual mode.\n \x1b[0m Asking user via keyboard...\n\x1b[94mI want Auto-GPT to\x1b[0m: \nAborted!\n"
+
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 
@@ -162,10 +164,16 @@ def download_and_run_plugins(plan, plugins_to_download, plugin_branch_to_use=Non
                 command = ["/bin/sh", "-c", download_and_run_command],
             )
         )
-    plan.exec(
+
+
+    # AutoGPT spins up a terminal that doesn't have the right exit code and Exec Doesn't like that
+    # we skip the check
+    result = plan.exec(
         service_name = "autogpt",
         recipe = ExecRecipe(
-            # running this in the background so that it exits
-            command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps &"]
-        )
+            command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps --skip-news"],
+        ),
+        skip_code_check = True,
     )
+    # we verify that terminal contained the expected AutoGPT prompt showing that the plugin was installed
+    plan.assert(result["output"], assertion=">=", target_value= AUTOGPT_INITIAL_PROMPT)
