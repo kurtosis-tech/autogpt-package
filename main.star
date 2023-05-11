@@ -70,11 +70,15 @@ def run(plan, args):
     elif env_vars.get("MEMORY_BACKEND", "redis") == "redis":
         env_vars["MEMORY_BACKEND"] = "redis"
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-        redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
-        # redis has to run inside the enclave so we set it up for them and change the vars
-        env_vars["REDIS_HOST"] = redis_server["hostname"]
-        env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
-        env_vars["REDIS_PASSWORD"] = ""
+        if "REDIS_HOST" in env_vars and "REDIS_PORT" in env_vars:
+            plan.print("As REDIS_HOST & REDIS_PORT are provided we will just use the remote Redis instance")
+        else:
+            plan.print("Setting up Redis")
+            redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
+            # redis has to run inside the enclave so we set it up for them and change the vars
+            env_vars["REDIS_HOST"] = redis_server["hostname"]
+            env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
+            env_vars["REDIS_PASSWORD"] = ""
     elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"]in ("local", "pinecone"):
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
     else:
