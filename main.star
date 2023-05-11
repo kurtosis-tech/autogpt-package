@@ -70,11 +70,15 @@ def run(plan, args):
     elif env_vars.get("MEMORY_BACKEND", "redis") == "redis":
         env_vars["MEMORY_BACKEND"] = "redis"
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-        redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
-        # redis has to run inside the enclave so we set it up for them and change the vars
-        env_vars["REDIS_HOST"] = redis_server["hostname"]
-        env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
-        env_vars["REDIS_PASSWORD"] = ""
+        if "REDIS_HOST" in env_vars and "REDIS_PORT" in env_vars:
+            plan.print("As REDIS_HOST & REDIS_PORT are provided we will just use the remote Redis instance")
+        else:
+            plan.print("Setting up Redis")
+            redis_server = redis_module.run(plan, {'redis-image': REDIS_IMAGE})
+            # redis has to run inside the enclave so we set it up for them and change the vars
+            env_vars["REDIS_HOST"] = redis_server["hostname"]
+            env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
+            env_vars["REDIS_PASSWORD"] = ""
     elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"]in ("local", "pinecone"):
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
     else:
@@ -88,6 +92,13 @@ def run(plan, args):
             image = AUTOGPT_IMAGE,
             entrypoint = ["sleep", "9999999"],
             env_vars = env_vars,
+        )
+    )
+
+    plan.exec(
+        service_name = "autogpt",
+        recipe = ExecRecipe(
+            command = ["mkdir", "/app/data"],
         )
     )
 
@@ -148,7 +159,7 @@ def launch_weaviate(plan):
 def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
         url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_repo_to_use)
-        download_and_run_command = "cd /app/autogpt && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin["name"], url)
+        download_and_run_command = "mkdir /app/plugins && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin["name"], url)
         plan.exec(
             service_name = "autogpt",
             recipe = ExecRecipe(
