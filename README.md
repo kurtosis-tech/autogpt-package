@@ -71,8 +71,6 @@ Under the hood, Kurtosis will download and install the package for you! As of no
 
 To add support for more plugins simply create an issue or create a PR adding an entry to [`plugins.star`](https://github.com/kurtosis-tech/autogpt-package/blob/main/plugins.star).
 
-NOTE - If you run AutoGPT with plugins; we are using our own image published at `h4ck3rk3y/autogpt`. We are tracking the update to use the official 0.3.0 image in: https://github.com/kurtosis-tech/autogpt-package/issues/27.
-
 ## Development
 
 Kurtosis has an extension available on [VSCode](https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension) that allows you to develop Kurtosis
