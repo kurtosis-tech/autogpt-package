@@ -14,8 +14,6 @@ WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 
 ARGS_TO_SKIP_FOR_ENV_VARS = ["__plugin_branch_to_use", "__plugin_repo_to_use"]
 
-AUTOGPT_INITIAL_PROMPT = "\x1b[32mWelcome to Auto-GPT! \x1b[0m run with '--help' for more information.\n\x1b[32mCreate an AI-Assistant: \x1b[0m input '--manual' to enter manual mode.\n \x1b[0m Asking user via keyboard...\n\x1b[94mI want Auto-GPT to\x1b[0m: \nAborted!\n"
-
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 
@@ -40,6 +38,8 @@ def run(plan, args):
         if env_var_key in ARGS_TO_SKIP_FOR_ENV_VARS:
             continue
         env_vars[env_var_key] = str(env_var_value)
+    
+    plugins_dir = env_vars.get("PLUGINS_DIR", "plugins")
 
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
@@ -130,7 +130,7 @@ def run(plan, args):
                 plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))            
 
         if plugins_to_download:
-            download_plugins(plan, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
+            download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
             install_plugins(plan)
 
 
@@ -155,10 +155,10 @@ def launch_weaviate(plan):
 
     return weaviate
 
-def download_plugins(plan, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
+def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
         url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_repo_to_use)
-        download_and_run_command = "cd /app/autogpt && wget -O ./plugins/{0} {1}".format(plugin["name"], url)
+        download_and_run_command = "cd /app/autogpt && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin["name"], url)
         plan.exec(
             service_name = "autogpt",
             recipe = ExecRecipe(
@@ -168,14 +168,9 @@ def download_plugins(plan, plugins_to_download, plugin_branch_to_use=None, plugi
 
 
 def install_plugins(plan):
-    # AutoGPT spins up a terminal that doesn't have the right exit code and Exec Doesn't like that
-    # we skip the check
-    result = plan.exec(
+    plan.exec(
         service_name = "autogpt",
         recipe = ExecRecipe(
-            command = ["/bin/sh", "-c", "python -m autogpt --install-plugin-deps --skip-news"],
-        ),
-        skip_code_check = True,
+            command = ["/bin/sh", "-c", "python scripts/install_plugin_deps.py"],
+        )
     )
-    # we verify that terminal contained the expected AutoGPT prompt showing that the plugin was installed
-    plan.assert(result["output"], assertion=">=", target_value= AUTOGPT_INITIAL_PROMPT)
