@@ -95,6 +95,13 @@ def run(plan, args):
         )
     )
 
+    plan.exec(
+        service_name = "autogpt",
+        recipe = ExecRecipe(
+            command = ["mkdir", "/app/data"],
+        )
+    )
+
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.exec(
             service_name = "autogpt",
@@ -152,7 +159,7 @@ def launch_weaviate(plan):
 def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
         url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_repo_to_use)
-        download_and_run_command = "cd /app/autogpt && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin["name"], url)
+        download_and_run_command = "mkdir /app/plugins && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin["name"], url)
         plan.exec(
             service_name = "autogpt",
             recipe = ExecRecipe(
