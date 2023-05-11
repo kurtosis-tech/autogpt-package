@@ -3,14 +3,15 @@ STDLIB_PLUGIN_REPO = "Significant-Gravitas/Auto-GPT-Plugins"
 STDLIB_OF_PLUGINS_FILENAME = "Auto-GPT-Plugins.zip"
 
 plugins_map = {
-    "twitter": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "email": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "scenex": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "bing_search": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "news_search": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "wikipedia_search": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "api_tools": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "random_values": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTTwitter": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTEmailPlugin": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTSceneXPlugin": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTBingSearch": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTNewsSearch": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTWikipediaSearch": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTApiTools": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTRandomValues": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTSpacePlugin": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTGoogleAnalyticsPlugin": {"name": "AutoGPTGoogleAnalyticsPlugin", "repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
 }
 
