@@ -36,7 +36,7 @@ jobs:
       - run: kurtosis engine restart
 
       - run: |
-          kurtosis run ${PWD} '{"OPENAI_API_KEY": "test"}'
+          kurtosis run .  '{"OPENAI_API_KEY": "test", "MEMORY_BACKEND": "local", "ALLOWLISTED_PLUGINS": "twitter"}'
   
   run_package_with_plugins_nightly:
     executor: ubuntu_vm
