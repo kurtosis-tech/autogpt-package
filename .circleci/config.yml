@@ -57,7 +57,7 @@ jobs:
       - run: |
           plugins_to_test=("AutoGPTTwitter")
           for plugin in $plugins_to_test; do
-            kurtosis run .  '{"OPENAI_API_KEY": "test", "MEMORY_BACKEND": "local", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter"}'
+            kurtosis run .  '{"OPENAI_API_KEY": "test", "MEMORY_BACKEND": "local", "ALLOWLISTED_PLUGINS": '\"$plugin\"'}'
           done
 
       # this step will be always run even if the previous step fails, some steps are configured this way. More info here: https://circleci.com/docs/configuration-reference#steps
