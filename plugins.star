@@ -20,7 +20,6 @@ plugins_map = {
     "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
     "AutoGPTCryptoPlugin": {"repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
     "AutoGPT_YouTube": {"repository": "jpetzke/AutoGPT-YouTube", "branch": MASTER_BRANCH},
-    "AutoGPT_Zapier": {"repository": "AntonioCiolino/AutoGPT-Zapier", "branch": "main"},
     "AutoGPTPMPlugin": {"repository": "minfenglu/AutoGPT-PM-Plugin", "branch": "main"},
     "AutoGPTWolframAlpha": {"repository":"gravelBridge/AutoGPT-WolframAlpha", "branch": "main"},
 }
