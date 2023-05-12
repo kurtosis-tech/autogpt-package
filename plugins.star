@@ -19,6 +19,7 @@ plugins_map = {
     "AutoGPTUserInput": {"repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH},
     "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
     "AutoGPTCryptoPlugin": {"repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPT_YouTube": {"name": "AutoGPT_YouTube", "repository": "jpetzke/AutoGPT-YouTube", "branch": MASTER_BRANCH},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
