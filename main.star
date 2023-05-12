@@ -102,6 +102,14 @@ def run(plan, args):
         )
     )
 
+    init_env_file_command = "echo '{0}' > /app/.env".format("\n".join(["{0}={1}".format(k, v) for (k, v) in env_vars.items()]))
+    plan.exec(
+        service_name = "autogpt",
+        recipe = ExecRecipe(
+            command = ["/bin/sh", "-c", init_env_file_command]
+        )
+    )
+
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.exec(
             service_name = "autogpt",
