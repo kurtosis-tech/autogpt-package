@@ -17,12 +17,12 @@ plugins_map = {
     # end of standard plugins
     "AutoGPTAlpacaTraderPlugin": {"repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH},
     "AutoGPTUserInput": {"repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTBingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MAIN_BRANCH},
+    "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MAIN_BRANCH},
     "AutoGPTCryptoPlugin": {"repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTDiscordPlugin": {"repository": "gravelBridge/AutoGPT-Discord", "branch": MAIN_BRANCH},
+    "AutoGPTDiscord": {"repository": "gravelBridge/AutoGPT-Discord", "branch": MAIN_BRANCH},
     "AutoGPTDollyPlugin": {"repository": "pr-0f3t/Auto-GPT-Dolly-Plugin", "branch": MASTER_BRANCH},
     "AutoGPTGoogleAnalyticsPlugin": {"repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTIFTTTWebhooksPlugin": {"repository": "AntonioCiolino/AutoGPT-IFTTT", "branch": MASTER_BRANCH},
+    "AutoGPT_IFTTT": {"repository": "AntonioCiolino/AutoGPT-IFTTT", "branch": MASTER_BRANCH},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
