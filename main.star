@@ -159,7 +159,7 @@ def launch_weaviate(plan):
 def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
         url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_repo_to_use)
-        plugin_filename = plugins.get_filename(plugin])
+        plugin_filename = plugins.get_filename(plugin)
         download_and_run_command = "mkdir /app/plugins && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin_filename, url)
         plan.exec(
             service_name = "autogpt",
