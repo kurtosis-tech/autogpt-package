@@ -120,7 +120,8 @@ def run(plan, args):
 
         plugins_to_download = list()
         plugins_already_in_download_list = list()
-        for plugin_name in env_vars['ALLOWLISTED_PLUGINS'].split(','):
+        plugins_names = env_vars['ALLOWLISTED_PLUGINS'].split(',')
+        for plugin_name in plugins_names:
             if plugin_name in plugins.plugins_map:
                 plugin = plugins.plugins_map[plugin_name]
                 if plugin_name in plugins_already_in_download_list:
@@ -128,7 +129,7 @@ def run(plan, args):
                 plugins_to_download.append(plugin)
                 plugins_already_in_download_list.append(plugin_name)
             else:
-                plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))            
+                fail("Invalid plugin name {0}.  The supported plugins are: {1}. You can add support for a new plugin by creating an issue or PR at {2}".format(plugin_name, ", ".join(plugins.plugins_map.keys()), "https://github.com/kurtosis-tech/autogpt-package"))
 
         if plugins_to_download:
             download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
