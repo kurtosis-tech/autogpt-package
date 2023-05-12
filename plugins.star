@@ -3,20 +3,20 @@ STDLIB_PLUGIN_REPO = "Significant-Gravitas/Auto-GPT-Plugins"
 STDLIB_OF_PLUGINS_FILENAME = "Auto-GPT-Plugins.zip"
 
 plugins_map = {
-    "AutoGPTTwitter": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTEmailPlugin": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTSceneXPlugin": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTBingSearch": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTNewsSearch": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTWikipediaSearch": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTApiTools": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTRandomValues": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTSpacePlugin": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
-    "AutoGPTGoogleAnalyticsPlugin": {"name": "Auto-GPT-Google-Analytics-Plugin.zip", "repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTAlpacaTraderPlugin": {"name": "Auto-GPT-AlpacaTrader-Plugin.zip", "repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTUserInput": {"name": "Auto-GPT-User-Input-Plugin.zip", "repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH}
-    "BingAI": {"name": "AutoGPT-BingAI.zip", "repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
-    "AutoGPTCryptoPlugin": {"name": "Auto-GPT-Crypto-Plugin.zip", "repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPTTwitter": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTEmailPlugin": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTSceneXPlugin": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTBingSearch": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTNewsSearch": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTWikipediaSearch": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTApiTools": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTRandomValues": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTSpacePlugin": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTGoogleAnalyticsPlugin": {"repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPTAlpacaTraderPlugin": {"repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPTUserInput": {"repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH}
+    "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
+    "AutoGPTCryptoPlugin": {"repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
@@ -27,3 +27,7 @@ def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
     if plugin_branch_to_use:
         branch = plugin_branch_to_use
     return "https://github.com/{0}/archive/refs/heads/{1}.zip".format(repo, branch)
+
+def get_filename(plugin):
+    author, repo = plugin["repo"].split("/")
+    return repo
