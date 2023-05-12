@@ -13,7 +13,10 @@ plugins_map = {
     "AutoGPTRandomValues": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTSpacePlugin": {"name": STDLIB_OF_PLUGINS_FILENAME, "author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTGoogleAnalyticsPlugin": {"name": "AutoGPTGoogleAnalyticsPlugin", "repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTAlpacaTraderPlugin": {"name": "Auto-GPT-AlpacaTrader-Plugin", "repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH}
+    "AutoGPTAlpacaTraderPlugin": {"name": "Auto-GPT-AlpacaTrader-Plugin.zip", "repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPTUserInput": {"name": "Auto-GPT-User-Input-Plugin.zip", "repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH}
+    "BingAI": {"name": "AutoGPT-BingAI.zip", "repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
+    "AutoGPTCryptoPlugin": {"name": "Auto-GPT-Crypto-Plugin.zip", "repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
