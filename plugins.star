@@ -23,6 +23,8 @@ plugins_map = {
     "AutoGPTDollyPlugin": {"repository": "pr-0f3t/Auto-GPT-Dolly-Plugin", "branch": MASTER_BRANCH},
     "AutoGPTGoogleAnalyticsPlugin": {"repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
     "AutoGPT_IFTTT": {"repository": "AntonioCiolino/AutoGPT-IFTTT", "branch": MASTER_BRANCH},
+    "AutoGPT_YouTube": {"repository": "jpetzke/AutoGPT-YouTube", "branch": MASTER_BRANCH},
+    "AutoGPT-Zapier": {"repository": "AntonioCiolino/AutoGPT-Zapier", "branch": "main"},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
