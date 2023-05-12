@@ -120,13 +120,13 @@ def run(plan, args):
 
         plugins_to_download = list()
         plugins_already_in_download_list = list()
-        for plugin in env_vars['ALLOWLISTED_PLUGINS'].split(','):
-            if plugin in plugins.plugins_map:
-                plugin = plugins.plugins_map[plugin]
-                if plugin["name"] in plugins_already_in_download_list:
+        for plugin_name in env_vars['ALLOWLISTED_PLUGINS'].split(','):
+            if plugin_name in plugins.plugins_map:
+                plugin = plugins.plugins_map[plugin_name]
+                if plugin_name in plugins_already_in_download_list:
                     continue
                 plugins_to_download.append(plugin)
-                plugins_already_in_download_list.append(plugin["name"])
+                plugins_already_in_download_list.append(plugin_name)
             else:
                 plan.print("{0} plugin isn't supported yet. Please create an issue or PR at {1} to get it added".format(plugin, "https://github.com/kurtosis-tech/autogpt-package"))            
 
@@ -159,7 +159,8 @@ def launch_weaviate(plan):
 def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
         url = plugins.get_plugin_url(plugin, plugin_branch_to_use, plugin_repo_to_use)
-        download_and_run_command = "mkdir /app/plugins && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin["name"], url)
+        plugin_filename = plugins.get_filename(plugin)
+        download_and_run_command = "mkdir /app/plugins && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin_filename, url)
         plan.exec(
             service_name = "autogpt",
             recipe = ExecRecipe(
