@@ -121,7 +121,6 @@ def run(plan, args):
         plugins_to_download = list()
         plugins_already_in_download_list = list()
         for plugin_name in env_vars['ALLOWLISTED_PLUGINS'].split(','):
-            plan.print(plugin_name)
             if plugin_name in plugins.plugins_map:
                 plugin = plugins.plugins_map[plugin_name]
                 if plugin_name in plugins_already_in_download_list:

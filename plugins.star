@@ -20,7 +20,7 @@ plugins_map = {
     "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
     "AutoGPTCryptoPlugin": {"repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
     "AutoGPT_YouTube": {"repository": "jpetzke/AutoGPT-YouTube", "branch": MASTER_BRANCH},
-    "AutoGPT-Zapier": {"repository": "AutoGPT-Zapier", "branch": MASTER_BRANCH},
+    "AutoGPT-Zapier": {"repository": "AntonioCiolino/AutoGPT-Zapier", "branch": "main"},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
