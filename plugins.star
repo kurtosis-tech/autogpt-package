@@ -1,3 +1,4 @@
+MAIN_BRANCH = "main"
 MASTER_BRANCH = "master"
 STDLIB_PLUGIN_REPO = "Significant-Gravitas/Auto-GPT-Plugins"
 ZIP_EXTENSION = ".zip"
@@ -14,11 +15,14 @@ plugins_map = {
     "AutoGPTRandomValues": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTSpacePlugin": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     # end of standard plugins
-    "AutoGPTGoogleAnalyticsPlugin": {"repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
     "AutoGPTAlpacaTraderPlugin": {"repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH},
     "AutoGPTUserInput": {"repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH},
-    "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
+    "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MAIN_BRANCH},
     "AutoGPTCryptoPlugin": {"repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPTDiscord": {"repository": "gravelBridge/AutoGPT-Discord", "branch": MAIN_BRANCH},
+    "AutoGPTDollyPlugin": {"repository": "pr-0f3t/Auto-GPT-Dolly-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPTGoogleAnalyticsPlugin": {"repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPT_IFTTT": {"repository": "AntonioCiolino/AutoGPT-IFTTT", "branch": MASTER_BRANCH},
     "AutoGPT_YouTube": {"repository": "jpetzke/AutoGPT-YouTube", "branch": MASTER_BRANCH},
     "AutoGPT-Zapier": {"repository": "AntonioCiolino/AutoGPT-Zapier", "branch": "main"},
 }
