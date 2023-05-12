@@ -3,6 +3,7 @@ STDLIB_PLUGIN_REPO = "Significant-Gravitas/Auto-GPT-Plugins"
 STDLIB_OF_PLUGINS_FILENAME = "Auto-GPT-Plugins.zip"
 
 plugins_map = {
+    # begin standard plugins
     "AutoGPTTwitter": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTEmailPlugin": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTSceneXPlugin": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
@@ -12,9 +13,10 @@ plugins_map = {
     "AutoGPTApiTools": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTRandomValues": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTSpacePlugin": {"author": STDLIB_PLUGIN_REPO, "repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    # end of standard plugins
     "AutoGPTGoogleAnalyticsPlugin": {"repository": "isaiahbjork/Auto-GPT-Google-Analytics-Plugin", "branch": MASTER_BRANCH},
     "AutoGPTAlpacaTraderPlugin": {"repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTUserInput": {"repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH}
+    "AutoGPTUserInput": {"repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH},
     "BingAI": {"repository": "gravelBridge/AutoGPT-BingAI", "branch": MASTER_BRANCH},
     "AutoGPTCryptoPlugin": {"repository": "isaiahbjork/Auto-GPT-Crypto-Plugin", "branch": MASTER_BRANCH},
 }
