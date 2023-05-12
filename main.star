@@ -1,6 +1,10 @@
+milvus = import_module("github.com/kurtosis-tech/autogpt-package/src/milvus.star")
+
 AUTOGPT_IMAGE="significantgravitas/auto-gpt:latest"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 WEAVIATE_IMAGE="semitechnologies/weaviate:1.18.3"
+
+AUTOGPT_SERVICE_NAME = "autogpt"
 
 OPENAI_API_KEY_ARG="OPENAI_API_KEY"
 
@@ -9,6 +13,8 @@ WEAVIATE_PORT_ID = "http"
 WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 
 ARGS_TO_SKIP_FOR_ENV_VARS = ["__plugin_branch_to_use", "__plugin_repo_to_use"]
+
+DEFAULT_PLUGINS_DIRNAME = "plugins"
 
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
@@ -35,7 +41,9 @@ def run(plan, args):
             continue
         env_vars[env_var_key] = str(env_var_value)
     
-    plugins_dir = env_vars.get("PLUGINS_DIR", "plugins")
+    plugins_dir = env_vars.get("PLUGINS_DIR", DEFAULT_PLUGINS_DIRNAME)
+
+    is_milvus_running_locally = False
 
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
@@ -60,13 +68,24 @@ def run(plan, args):
                     env_vars[weaviate_arg_key] = weaviate_arg_value
     elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "milvus":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-        milvus_required_args = ["MILVUS_ADDR", "MILVUS_USERNAME", "MILVUS_PASSWORD"]
+
+        if "MILVUS_ADDR" in env_vars and env_vars["MILVUS_ADDR"] != "":
+            plan.print("Using Milvus from the cloud on address '{}'".format(env_vars["MILVUS_ADDR"]))
+            
+            milvus_required_args = ["MILVUS_USERNAME", "MILVUS_PASSWORD"]
+            for env_var_key in milvus_required_args:
+                if env_var_key not in env_vars:
+                    plan.print("{0} are required keys for Milvus in the cloud. Seems like one of them is missing.")
+                    fail("{0} is a required env var that needs to be set for Milvus in the cloud to work but was missing".format(env_var_key))
+
+        else:
+            plan.print("Preparing for using Milvus locally")
+            milvus_address = milvus.launch(plan)
+            env_vars["MILVUS_ADDR"] = milvus_address
+            is_milvus_running_locally = True
+
         env_vars["MILVUS_SECURE"] = str(False)
         env_vars["MILVUS_COLLECTION"] = "autogpt"
-        for env_var_key in milvus_required_args:
-            if env_var_key not in env_vars:
-                plan.print("{0} are required keys for Milvus. Seems like one of them is missing. We don't support spinning up Mivlus in Docker yet so your MILVUS_ADDR needs to be set to a cloud instance for now")
-                fail("{0} is a required env var that needs to be set for Milvus to work but was missing".format(env_var_key))
     elif env_vars.get("MEMORY_BACKEND", "redis") == "redis":
         env_vars["MEMORY_BACKEND"] = "redis"
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
@@ -87,7 +106,7 @@ def run(plan, args):
     plan.print("Starting AutoGpt with environment variables set to\n{0}".format(env_vars))
 
     plan.add_service(
-        name = "autogpt",
+        name = AUTOGPT_SERVICE_NAME,
         config = ServiceConfig(
             image = AUTOGPT_IMAGE,
             entrypoint = ["sleep", "9999999"],
@@ -96,7 +115,7 @@ def run(plan, args):
     )
 
     plan.exec(
-        service_name = "autogpt",
+        service_name = AUTOGPT_SERVICE_NAME,
         recipe = ExecRecipe(
             command = ["mkdir", "/app/data"],
         )
@@ -104,15 +123,30 @@ def run(plan, args):
 
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.exec(
-            service_name = "autogpt",
+            service_name = AUTOGPT_SERVICE_NAME,
             recipe = ExecRecipe(
                 command = ["pip", "install", "weaviate-client"]
+            )
+        )
+        
+    if is_milvus_running_locally:
+        plan.exec(
+            service_name = AUTOGPT_SERVICE_NAME,
+            recipe = ExecRecipe(
+                command = ["/bin/sh", "-c", 
+                "pip3 install cmake && " + 
+                "apt-get install gcc libpq-dev -y && " + 
+                "apt-get install python-dev -y && " +
+                "apt-get install python3-dev python3-pip python3-venv python3-wheel -y && " +
+                "pip3 install wheel setuptools --upgrade && " +
+                "pip3 install --upgrade pip && " +
+                "pip3 install pymilvus==2.2.0"]
             )
         )
 
     if 'ALLOWLISTED_PLUGINS' in env_vars:
         plan.exec(
-            service_name = "autogpt",
+            service_name = AUTOGPT_SERVICE_NAME,
             recipe = ExecRecipe(
                 command = ["mkdir", "/app/autogpt/plugins"]
             )
@@ -162,7 +196,7 @@ def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_us
         plugin_filename = plugins.get_filename(plugin)
         download_and_run_command = "mkdir /app/plugins && wget -O ./{0}/{1} {2}".format(plugins_dir, plugin_filename, url)
         plan.exec(
-            service_name = "autogpt",
+            service_name = AUTOGPT_SERVICE_NAME,
             recipe = ExecRecipe(
                 command = ["/bin/sh", "-c", download_and_run_command],
             )
@@ -171,7 +205,7 @@ def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_us
 
 def install_plugins(plan):
     plan.exec(
-        service_name = "autogpt",
+        service_name = AUTOGPT_SERVICE_NAME,
         recipe = ExecRecipe(
             command = ["/bin/sh", "-c", "python scripts/install_plugin_deps.py"],
         )
