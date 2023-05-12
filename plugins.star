@@ -1,6 +1,6 @@
 MASTER_BRANCH = "master"
 STDLIB_PLUGIN_REPO = "Significant-Gravitas/Auto-GPT-Plugins"
-STDLIB_OF_PLUGINS_FILENAME = "Auto-GPT-Plugins.zip"
+ZIP_EXTENSION = ".zip"
 
 plugins_map = {
     # begin standard plugins
@@ -31,5 +31,5 @@ def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
     return "https://github.com/{0}/archive/refs/heads/{1}.zip".format(repo, branch)
 
 def get_filename(plugin):
-    author, repo = plugin["repo"].split("/")
-    return repo
+    author, actual_repo = plugin["repository"].split("/")
+    return actual_repo + ZIP_EXTENSION
