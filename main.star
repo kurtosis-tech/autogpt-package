@@ -43,7 +43,7 @@ def run(plan, args):
     
     plugins_dir = env_vars.get("PLUGINS_DIR", DEFAULT_PLUGINS_DIRNAME)
 
-    is_milvus_running_locally = False
+    is_memory_backend_milvus = False
 
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
@@ -67,6 +67,7 @@ def run(plan, args):
                 if weaviate_arg_key not in env_vars:
                     env_vars[weaviate_arg_key] = weaviate_arg_value
     elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "milvus":
+        is_memory_backend_milvus = True
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
 
         if "MILVUS_ADDR" in env_vars and env_vars["MILVUS_ADDR"] != "":
@@ -82,7 +83,6 @@ def run(plan, args):
             plan.print("Preparing for using Milvus locally")
             milvus_address = milvus.launch(plan)
             env_vars["MILVUS_ADDR"] = milvus_address
-            is_milvus_running_locally = True
 
         env_vars["MILVUS_SECURE"] = str(False)
         env_vars["MILVUS_COLLECTION"] = "autogpt"
@@ -129,18 +129,11 @@ def run(plan, args):
             )
         )
         
-    if is_milvus_running_locally:
+    if is_memory_backend_milvus:
         plan.exec(
             service_name = AUTOGPT_SERVICE_NAME,
             recipe = ExecRecipe(
-                command = ["/bin/sh", "-c", 
-                "pip3 install cmake && " + 
-                "apt-get install gcc libpq-dev -y && " + 
-                "apt-get install python-dev -y && " +
-                "apt-get install python3-dev python3-pip python3-venv python3-wheel -y && " +
-                "pip3 install wheel setuptools --upgrade && " +
-                "pip3 install --upgrade pip && " +
-                "pip3 install pymilvus==2.2.0"]
+                command = ["pip", "install", "pymilvus"]
             )
         )
 
