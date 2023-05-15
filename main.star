@@ -15,6 +15,10 @@ WEAVIATE_PORT_PROTOCOL = WEAVIATE_PORT_ID
 ARGS_TO_SKIP_FOR_ENV_VARS = ["__plugin_branch_to_use", "__plugin_repo_to_use"]
 
 DEFAULT_PLUGINS_DIRNAME = "plugins"
+# Chrome seems to be having some issues starting up in Docker
+# We set USE_WEB_BROWSER=DEFAULT_WEB_BROWSER unless the user specifies something else
+# TODO fix this after https://github.com/Significant-Gravitas/Auto-GPT/issues/3779 is fixed
+DEFAULT_WEB_BROWSER="firefox"
 
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
@@ -42,6 +46,9 @@ def run(plan, args):
         env_vars[env_var_key] = str(env_var_value)
     
     plugins_dir = env_vars.get("PLUGINS_DIR", DEFAULT_PLUGINS_DIRNAME)
+
+    if "USE_WEB_BROWSER" not in env_vars:
+        env_vars["USE_WEB_BROWSER"] = DEFAULT_WEB_BROWSER
 
     is_memory_backend_milvus = False
 
