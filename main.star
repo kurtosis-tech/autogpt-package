@@ -156,7 +156,7 @@ def run(plan, args):
         plan.exec(
             service_name = AUTOGPT_SERVICE_NAME,
             recipe = ExecRecipe(
-                command = ["mkdir", "-p" "/app/plugins"]
+                command = ["mkdir", "-p", "/app/plugins"]
             )
         )
 
