@@ -59,10 +59,10 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 
 ## How to get plugins to work
 
-Kurtosis supports the `ALLOWLISTED_PLUGINS` configuration flag that `AutoGPT` ships with. For example, to run the `twitter` plugin do the following:
+Kurtosis supports the `ALLOWLISTED_PLUGINS` configuration flag that `AutoGPT` ships with. For example, to run the `AutoGPTTwitter` plugin do the following:
 
 ```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "twitter"}'
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter"}'
 ```
 
 Under the hood, Kurtosis will download and install the package for you! As of now the following plugins are supported:
