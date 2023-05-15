@@ -14,6 +14,8 @@ plugins_map = {
     "AutoGPTApiTools": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTRandomValues": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTSpacePlugin": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTBaiduSearch": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
+    "AutoGPTBluesky": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     # end of standard plugins
     "AutoGPTAlpacaTraderPlugin": {"repository": "danikhan632/Auto-GPT-AlpacaTrader-Plugin", "branch": MASTER_BRANCH},
     "AutoGPTUserInput": {"repository": "HFrovinJensen/Auto-GPT-User-Input-Plugin", "branch": MASTER_BRANCH},
