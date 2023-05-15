@@ -73,9 +73,29 @@ Under the hood, Kurtosis will download and install the package for you! As of no
 - [Bing Search](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/bing_search)
 - [News Search](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/news_search)
 - [Wikipedia Search](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/wikipedia_search)
+- [Api Tools](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/api_tools)
+- [Random Values](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/random_values)
+- [Space](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/astro)
+- [Baidu](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/baidu_search)
+- [Bluesky](https://github.com/Significant-Gravitas/Auto-GPT-Plugins/tree/master/src/autogpt_plugins/bluesky)
+- [AutoGPTAlpacaTraderPlugin](https://github.com/danikhan632/Auto-GPT-AlpacaTrader-Plugin)
+- [AutoGPTUserInput](https://github.com/HFrovinJensen/Auto-GPT-User-Input-Plugin)
+- [BingAI](https://github.com/gravelBridge/AutoGPT-BingAI)
+- [AutoGPTCryptoPlugin](https://github.com/isaiahbjork/Auto-GPT-Crypto-Plugin)
+- [AutoGPTDiscord](https://github.com/gravelBridge/AutoGPT-Discord)
+- [AutoGPTDollyPlugin](https://github.com/pr-0f3t/Auto-GPT-Dolly-Plugin)
 - [AutoGPTGoogleAnalyticsPlugin](https://github.com/isaiahbjork/Auto-GPT-Google-Analytics-Plugin)
+- [AutoGPT_IFTTT](https://github.com/AntonioCiolino/AutoGPT-IFTTT)
+- [AutoGPT_YouTube](https://github.com/jpetzke/AutoGPT-YouTube)
+- [AutoGPTPMPlugin](https://github.com/minfenglu/AutoGPT-PM-Plugin)
+- [AutoGPTWolframAlpha](https://github.com/gravelBridge/AutoGPT-WolframAlpha)
+- [AutoGPTTodoistPlugin](https://github.com/danikhan632/Auto-GPT-Todoist-Plugin)
+- [AutoGPTMessagesPlugin](https://github.com/danikhan632/Auto-GPT-Messages-Plugin)
+- [AutoGPTWebInteraction](https://github.com/gravelBridge/AutoGPT-Web-Interaction)
+- [AutoGPTNotion](https://github.com/doutv/Auto-GPT-Notion)
+- [SystemInformationPlugin](https://github.com/hdkiller/Auto-GPT-SystemInfo)
 
-To add support for more plugins simply create an issue or create a PR adding an entry to [`plugins.star`](https://github.com/kurtosis-tech/autogpt-package/blob/main/plugins.star).
+To add support for more plugins simply create an issue or create a PR adding an entry to [`plugins.star`](https://github.com/kurtosis-tech/autogpt-package/blob/main/plugins.star). Sometimes the code is better updated than the README with what's supported.
 
 ## Development
 
