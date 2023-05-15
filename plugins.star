@@ -29,7 +29,10 @@ plugins_map = {
     "AutoGPTPMPlugin": {"repository": "minfenglu/AutoGPT-PM-Plugin", "branch": "main"},
     "AutoGPTWolframAlpha": {"repository":"gravelBridge/AutoGPT-WolframAlpha", "branch": "main"},
     "AutoGPTTodoistPlugin": {"repository": "danikhan632/Auto-GPT-Todoist-Plugin", "branch": MASTER_BRANCH},
-    "AutoGPTMessagesPlugin": {"repository": "danikhan632/Auto-GPT-Messages-Plugin", "branch": MASTER_BRANCH}
+    "AutoGPTMessagesPlugin": {"repository": "danikhan632/Auto-GPT-Messages-Plugin", "branch": MASTER_BRANCH},
+    "AutoGPTWebInteraction": {"repository": "gravelBridge/AutoGPT-Web-Interaction", "branch": MAIN_BRANCH},
+    "AutoGPTNotion": {"repository": "doutv/Auto-GPT-Notion", "branch": MASTER_BRANCH},
+    "SystemInformationPlugin": {"repository": "hdkiller/Auto-GPT-SystemInfo", "branch": MASTER_BRANCH},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
