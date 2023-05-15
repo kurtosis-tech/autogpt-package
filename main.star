@@ -1,6 +1,6 @@
 milvus = import_module("github.com/kurtosis-tech/autogpt-package/src/milvus.star")
 
-AUTOGPT_IMAGE="significantgravitas/auto-gpt:latest"
+AUTOGPT_IMAGE="significantgravitas/auto-gpt:v0.3.0"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 WEAVIATE_IMAGE="semitechnologies/weaviate:1.18.3"
 
