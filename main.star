@@ -1,6 +1,6 @@
 milvus = import_module("github.com/kurtosis-tech/autogpt-package/src/milvus.star")
 
-AUTOGPT_IMAGE="significantgravitas/auto-gpt:v0.3.0"
+AUTOGPT_IMAGE="significantgravitas/auto-gpt:v0.3.1"
 REDIS_IMAGE="redis/redis-stack-server:latest"
 WEAVIATE_IMAGE="semitechnologies/weaviate:1.18.3"
 
@@ -156,7 +156,7 @@ def run(plan, args):
         plan.exec(
             service_name = AUTOGPT_SERVICE_NAME,
             recipe = ExecRecipe(
-                command = ["mkdir", "/app/plugins"]
+                command = ["mkdir", "-p" "/app/plugins"]
             )
         )
 
