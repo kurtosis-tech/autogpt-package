@@ -33,6 +33,7 @@ plugins_map = {
     "AutoGPTWebInteraction": {"repository": "gravelBridge/AutoGPT-Web-Interaction", "branch": MAIN_BRANCH},
     "AutoGPTNotion": {"repository": "doutv/Auto-GPT-Notion", "branch": MASTER_BRANCH},
     "SystemInformationPlugin": {"repository": "hdkiller/Auto-GPT-SystemInfo", "branch": MASTER_BRANCH},
+    "AutoGPT_Zapier": {"repository": "AntonioCiolino/AutoGPT-Zapier", "branch": MAIN_BRANCH},
 }
 
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
