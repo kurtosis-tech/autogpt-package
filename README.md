@@ -67,6 +67,7 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 
 Under the hood, Kurtosis will download and install the package for you! As of now the following plugins are supported:
 
+### First Party
 - [AutoGPTTwitter](https://github.com/Significant-Gravitas/Auto-GPT-Plugins)
 - [AutoGPTEmailPlugin](https://github.com/Significant-Gravitas/Auto-GPT-Plugins)
 - [AutoGPTSceneXPlugin](https://github.com/Significant-Gravitas/Auto-GPT-Plugins)
@@ -84,6 +85,8 @@ Under the hood, Kurtosis will download and install the package for you! As of no
 - [AutoGPTCryptoPlugin](https://github.com/isaiahbjork/Auto-GPT-Crypto-Plugin)
 - [AutoGPTDiscord](https://github.com/gravelBridge/AutoGPT-Discord)
 - [AutoGPTDollyPlugin](https://github.com/pr-0f3t/Auto-GPT-Dolly-Plugin)
+
+### Third Party
 - [AutoGPTGoogleAnalyticsPlugin](https://github.com/isaiahbjork/Auto-GPT-Google-Analytics-Plugin)
 - [AutoGPT_IFTTT](https://github.com/AntonioCiolino/AutoGPT-IFTTT)
 - [AutoGPT_Zapier](https://github.com/AntonioCiolino/AutoGPT-Zapier)
