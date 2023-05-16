@@ -1,3 +1,6 @@
+redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
+common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star")
+plugins = import_module("github.com/kurtosis-tech/autogpt-package/src/plugins.star")
 milvus = import_module("github.com/kurtosis-tech/autogpt-package/src/milvus.star")
 
 AUTOGPT_IMAGE="significantgravitas/auto-gpt:v0.3.1"
@@ -20,8 +23,7 @@ DEFAULT_PLUGINS_DIRNAME = "plugins"
 # TODO fix this after https://github.com/Significant-Gravitas/Auto-GPT/issues/3779 is fixed
 DEFAULT_WEB_BROWSER="firefox"
 
-redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
-plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
+ALLOW_LISTED_PLUGINS_ENV_VAR_KEY = 'ALLOWLISTED_PLUGINS'
 
 def run(plan, args):
 
@@ -46,6 +48,12 @@ def run(plan, args):
         env_vars[env_var_key] = str(env_var_value)
     
     plugins_dir = env_vars.get("PLUGINS_DIR", DEFAULT_PLUGINS_DIRNAME)
+
+    # validate plugins
+    plugins_names = env_vars[ALLOW_LISTED_PLUGINS_ENV_VAR_KEY].split(',')
+    are_all_required_env_vars_set, missing_required_env_vars = plugins.areAllRequiredEnvVarsSet(env_vars, plugins_names)
+    if are_all_required_env_vars_set == False:
+        fail("Error while validating the required env var for plugins. The missing required env vars are '{}'".format(missing_required_env_vars))
 
     if "USE_WEB_BROWSER" not in env_vars:
         env_vars["USE_WEB_BROWSER"] = DEFAULT_WEB_BROWSER
@@ -152,7 +160,7 @@ def run(plan, args):
             )
         )
 
-    if 'ALLOWLISTED_PLUGINS' in env_vars:
+    if ALLOW_LISTED_PLUGINS_ENV_VAR_KEY in env_vars:
         plan.exec(
             service_name = AUTOGPT_SERVICE_NAME,
             recipe = ExecRecipe(
@@ -162,7 +170,7 @@ def run(plan, args):
 
         plugins_to_download = list()
         plugins_already_in_download_list = list()
-        plugins_names = env_vars['ALLOWLISTED_PLUGINS'].split(',')
+        
         for plugin_name in plugins_names:
             if plugin_name in plugins.plugins_map:
                 plugin = plugins.plugins_map[plugin_name]
@@ -171,7 +179,7 @@ def run(plan, args):
                 plugins_to_download.append(plugin)
                 plugins_already_in_download_list.append(plugin_name)
             else:
-                fail("Invalid plugin name {0}.  The supported plugins are: {1}. You can add support for a new plugin by creating an issue or PR at {2}".format(plugin_name, ", ".join(plugins.plugins_map.keys()), "https://github.com/kurtosis-tech/autogpt-package"))
+                fail("Invalid plugin name {0}. The supported plugins are: {1}. You can add support for a new plugin by creating an issue or PR at {2}".format(plugin_name, ", ".join(plugins.plugins_map.keys()), common.KURTOSIS_AUTOGPT_PACKAGE_URL))
 
         if plugins_to_download:
             download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
