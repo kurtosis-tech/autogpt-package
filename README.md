@@ -65,6 +65,12 @@ Kurtosis supports the `ALLOWLISTED_PLUGINS` configuration flag that `AutoGPT` sh
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter"}'
 ```
 
+To get multiple plugins running at the same time; separate them with comma without spaces like:
+
+```
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter,AutoGPTEmailPlugin"}'
+```
+
 Under the hood, Kurtosis will download and install the package for you! As of now the following plugins are supported:
 
 ### First Party
