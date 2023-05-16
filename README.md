@@ -89,6 +89,7 @@ Under the hood, Kurtosis will download and install the package for you! As of no
 ### Third Party
 - [AutoGPTGoogleAnalyticsPlugin](https://github.com/isaiahbjork/Auto-GPT-Google-Analytics-Plugin)
 - [AutoGPT_IFTTT](https://github.com/AntonioCiolino/AutoGPT-IFTTT)
+- [AutoGPT_Zapier](https://github.com/AntonioCiolino/AutoGPT-Zapier)
 - [AutoGPT_YouTube](https://github.com/jpetzke/AutoGPT-YouTube)
 - [AutoGPTPMPlugin](https://github.com/minfenglu/AutoGPT-PM-Plugin)
 - [AutoGPTWolframAlpha](https://github.com/gravelBridge/AutoGPT-WolframAlpha)
