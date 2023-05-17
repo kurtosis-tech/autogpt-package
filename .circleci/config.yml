@@ -36,7 +36,7 @@ jobs:
       - run: kurtosis engine restart
 
       - run: |
-          kurtosis run .  '{"OPENAI_API_KEY": "test", "MEMORY_BACKEND": "local", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter"}'
+          kurtosis run .  '{"OPENAI_API_KEY": "test", "MEMORY_BACKEND": "local", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter", "__skip_env_vars_validation": "True", "__skip_env_vars_default_values_set": "True"}'
   
   run_package_with_plugins_nightly:
     executor: ubuntu_vm
