@@ -15,6 +15,7 @@ plugins_map = {
     "AutoGPTSceneXPlugin": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH, REQUIRED_ENV_VARS: ["SCENEX_API_KEY"]},
     "AutoGPTBingSearch": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH, REQUIRED_ENV_VARS: ["BING_API_KEY"], ENV_VARS_DEFAULT_VALUES: {"SEARCH_ENGINE": "bing"}},
     "AutoGPTNewsSearch": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH, REQUIRED_ENV_VARS: ["NEWSAPI_API_KEY"]},
+    "PlannerPlugin": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTWikipediaSearch": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTApiTools": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
     "AutoGPTRandomValues": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH},
