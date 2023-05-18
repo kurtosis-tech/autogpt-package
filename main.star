@@ -51,30 +51,32 @@ def run(plan, args):
     
     plugins_dir = env_vars.get("PLUGINS_DIR", DEFAULT_PLUGINS_DIRNAME)
 
-    plugins_names = env_vars[ALLOW_LISTED_PLUGINS_ENV_VAR_KEY].split(',')
+    if ALLOW_LISTED_PLUGINS_ENV_VAR_KEY in env_vars:
 
-    # validate plugins names
-    plugins.validatePluginNames(plugins_names)
-    
-    # this means if its running in old CI configurations (AutoGPT CI config before adding validations) we need to know this for not creating a breaking change
-    isRunningInOldCIConfig = plugin_branch_to_use != None and plugin_repo_to_use != None 
+        plugins_names = env_vars[ALLOW_LISTED_PLUGINS_ENV_VAR_KEY].split(',')
 
-    # validate plugins 
-    # skip validation if it explicity requested in the arguments or if it's running in an old CI config
-    skip_env_vars_validation = SKIP_ENV_VARS_VALIDATION in args
-    
-    if not isRunningInOldCIConfig and not skip_env_vars_validation:
-        are_all_required_env_vars_set, missing_required_env_vars = plugins.areAllRequiredEnvVarsSet(env_vars, plugins_names)
-        if not are_all_required_env_vars_set:
-            fail("Error while validating the required env var for plugins. The missing required env vars are '{0}'".format(missing_required_env_vars))
+        # validate plugins names
+        plugins.validatePluginNames(plugins_names)
+        
+        # this means if its running in old CI configurations (AutoGPT CI config before adding validations) we need to know this for not creating a breaking change
+        isRunningInOldCIConfig = plugin_branch_to_use != None and plugin_repo_to_use != None 
 
-    # set plugins default env vars values
-    # skip plugin default env vars set if it explicity requested in the arguments or if it's running in an old CI config
-    skip_env_vars_default_values_set = SKIP_ENV_VARS_DEFAULT_VALUES_SET in args
+        # validate plugins 
+        # skip validation if it explicity requested in the arguments or if it's running in an old CI config
+        skip_env_vars_validation = SKIP_ENV_VARS_VALIDATION in args
+        
+        if not isRunningInOldCIConfig and not skip_env_vars_validation:
+            are_all_required_env_vars_set, missing_required_env_vars = plugins.areAllRequiredEnvVarsSet(env_vars, plugins_names)
+            if not are_all_required_env_vars_set:
+                fail("Error while validating the required env var for plugins. The missing required env vars are '{0}'".format(missing_required_env_vars))
 
-    if not isRunningInOldCIConfig and not skip_env_vars_default_values_set:
-        default_plugin_env_vars_values = plugins.getPluginsEnvVarsDefaultValues(plugins_names, env_vars)
-        env_vars.update(default_plugin_env_vars_values)
+        # set plugins default env vars values
+        # skip plugin default env vars set if it explicity requested in the arguments or if it's running in an old CI config
+        skip_env_vars_default_values_set = SKIP_ENV_VARS_DEFAULT_VALUES_SET in args
+
+        if not isRunningInOldCIConfig and not skip_env_vars_default_values_set:
+            default_plugin_env_vars_values = plugins.getPluginsEnvVarsDefaultValues(plugins_names, env_vars)
+            env_vars.update(default_plugin_env_vars_values)
     
     if "USE_WEB_BROWSER" not in env_vars:
         env_vars["USE_WEB_BROWSER"] = DEFAULT_WEB_BROWSER
