@@ -2,5 +2,3 @@
 # use workspace-base instead
 # can't use that here as this needs Go and TS
 FROM gitpod/workspace-base
-
-RUN kurtosis analytics enable
