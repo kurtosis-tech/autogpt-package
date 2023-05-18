@@ -64,7 +64,6 @@ def run(plan, args):
     skip_env_vars_validation = SKIP_ENV_VARS_VALIDATION in args
     
     if not isRunningInOldCIConfig and not skip_env_vars_validation:
-        plan.print("Not running in old CLI config")
         are_all_required_env_vars_set, missing_required_env_vars = plugins.areAllRequiredEnvVarsSet(env_vars, plugins_names)
         if not are_all_required_env_vars_set:
             fail("Error while validating the required env var for plugins. The missing required env vars are '{0}'".format(missing_required_env_vars))
