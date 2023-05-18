@@ -7,6 +7,7 @@ ZIP_EXTENSION = ".zip"
 REQUIRED_ENV_VARS = "required_env_vars"
 ENV_VARS_DEFAULT_VALUES = "env_vars_default_values"
 
+
 plugins_map = {
     # begin standard plugins
     "AutoGPTTwitter": {"repository": STDLIB_PLUGIN_REPO, "branch": MASTER_BRANCH, REQUIRED_ENV_VARS: ["TW_CONSUMER_KEY", "TW_CONSUMER_SECRET", "TW_ACCESS_TOKEN", "TW_ACCESS_TOKEN_SECRET", "TW_CLIENT_ID", "TW_CLIENT_ID_SECRET"]},
@@ -40,6 +41,7 @@ plugins_map = {
     "AutoGPT_Zapier": {"repository": "AntonioCiolino/AutoGPT-Zapier", "branch": MAIN_BRANCH, REQUIRED_ENV_VARS: ["ZAPIER_WEBHOOK_ENDPOINT"]},
 }
 
+
 def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
     repo = plugin_data["repository"]
     if plugin_repo_to_use:
@@ -49,9 +51,11 @@ def get_plugin_url(plugin_data, plugin_branch_to_use, plugin_repo_to_use):
         branch = plugin_branch_to_use
     return "https://github.com/{0}/archive/refs/heads/{1}.zip".format(repo, branch)
 
+
 def get_filename(plugin):
     author, actual_repo = plugin["repository"].split("/")
     return actual_repo + ZIP_EXTENSION
+
 
 def areAllRequiredEnvVarsSet(env_vars, plugins_names):
     areAllRequiredEnvVarsSet = True
@@ -68,11 +72,12 @@ def areAllRequiredEnvVarsSet(env_vars, plugins_names):
 
     return areAllRequiredEnvVarsSet, missing_env_vars
 
+
 def validatePluginNames(plugins_names):
     for plugin_name in plugins_names:
-        plugin_data = plugins_map.get(plugin_name)
-        if plugin_data == None:
+        if plugin_name not in plugins_map:
             fail("Invalid plugin name {0}. The supported plugins are: {1}. You can add support for a new plugin by creating an issue or PR at {2}".format(plugin_name, ", ".join(plugins_map.keys()), common.KURTOSIS_AUTOGPT_PACKAGE_URL))
+
 
 def getAllRequiredEnvVarsFor(plugins_names):
     required_env_vars = {}
@@ -84,6 +89,7 @@ def getAllRequiredEnvVarsFor(plugins_names):
         required_env_vars[plugin_name] = plugin_env_vars
     
     return required_env_vars
+
 
 def getPluginsEnvVarsDefaultValues(plugins_names, user_env_vars):
     env_vars_set = []
