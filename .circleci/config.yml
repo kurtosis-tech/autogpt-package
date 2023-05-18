@@ -56,7 +56,7 @@ jobs:
       - run: kurtosis engine restart
 
       - run: |
-          kurtosis run github.com/kurtosis-tech/autogpt-package '{"OPENAI_API_KEY": "test", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter", "__plugin_branch_to_use": "master", "__plugin_repo_to_use": "significant-gravitas/Auto-GPT-Plugins"}'
+          kurtosis run . '{"OPENAI_API_KEY": "test", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter", "__plugin_branch_to_use": "master", "__plugin_repo_to_use": "significant-gravitas/Auto-GPT-Plugins"}'
 
   run_package_with_plugins_nightly:
     executor: ubuntu_vm
