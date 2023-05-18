@@ -29,6 +29,22 @@ We use the `Redis` memory backend by default.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package)
 
+Once your GitPod is open; use the following
+
+```bash
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
+```
+
+Then start interacting with AutoGPT:
+
+```bash
+kurtosis service shell autogpt autogpt --exec "python -m autogpt"
+```
+
+You need to paste it in the terminal like
+
+![Run of the Auto-GPT Package](/gitpod.png)
+
 
 ## How to get the OpenAI API Key
 
