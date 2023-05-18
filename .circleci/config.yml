@@ -37,6 +37,8 @@ jobs:
 
       - run: |
           kurtosis run .  '{"OPENAI_API_KEY": "test", "MEMORY_BACKEND": "local", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter", "__skip_env_vars_validation": "True", "__skip_env_vars_default_values_set": "True"}'
+          kurtosis run .  '{"OPENAI_API_KEY": "test"}'
+
 
   # this emualtes https://github.com/Significant-Gravitas/Auto-GPT-Plugins/blob/master/.github/workflows/test-plugin-installation.yml
   test_plugins_ci_run:
