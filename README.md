@@ -4,90 +4,88 @@
 
 "It's like AutoGPT got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
 
-Assuming you have [Kurtosis installed](https://docs.kurtosis.com/install), first start AutoGPT (replacing `YOUR_API_KEY_HERE` with your API key):
+**NOTE:** You'll need an OpenAI API key. You can get one [here](https://platform.openai.com/account/api-keys).
 
-```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
-```
+## Run AutoGPT in the browser (no installation needed)
 
-Then start interacting with AutoGPT:
+1. If you don't have an OpenAI API key, get one [here](https://platform.openai.com/account/api-keys)
+1. Click [this link](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package) to open a Gitpod, selecting "Continue" to use the default resources
+1. Once the Gitpod is open, run the following in the terminal (replacing `YOUR_API_KEY_HERE` with your OpenAI API key)
+   ```bash
+   kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
+   ```
+1. Then, run the following in the terminal to open the AutoGPT prompt:
+   ```bash
+   kurtosis service shell autogpt autogpt --exec "python -m autogpt"
+   ```
+1. Use AutoGPT as you please!
 
-```bash
-kurtosis service shell autogpt autogpt --exec "python -m autogpt"
-```
+## Run AutoGPT on your machine
 
-If `kurtosis service shell autogpt autogpt --exec "python -m autogpt"` breaks for you then you might be on an older version of Kurtosis. Please use instead:
+1. If you don't have an OpenAI API key, get one [here](https://platform.openai.com/account/api-keys)
+1. Install Kurtosis using [these instructions](https://docs.kurtosis.com/install)
+1. Run the following in your terminal (replacing `YOUR_API_KEY_HERE` with your OpenAI API key)
+   ```bash
+   kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
+   ```
+1. Then, run the following in your terminal to open the AutoGPT prompt:
+   ```bash
+   kurtosis service shell autogpt autogpt --exec "python -m autogpt"
+   ```
+1. Use AutoGPT as you please! To destroy the AutoGPT instance, run:
+   ```
+   kurtosis enclave rm -f autogpt
+   ```
 
-```bash
-( echo "python -m autogpt" && cat ) | kurtosis service shell autogpt autogpt
-```
+## Configuring AutoGPT (including memory backend)
 
-We use the `Redis` memory backend by default.
+To pass any of the AutoGPT configuration values listed [here](https://github.com/Significant-Gravitas/Auto-GPT/blob/master/.env.template), pass the argument as a property of the JSON object you're passing to Kurtosis just like you passed in `OPENAI_API_KEY`.
 
-## Run On GitPod in the browser
-
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package)
-
-Once your GitPod is open; use the following
-
-```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
-```
-
-Then start interacting with AutoGPT:
-
-```bash
-kurtosis service shell autogpt autogpt --exec "python -m autogpt"
-```
-
-You need to paste it in the terminal like
-
-![Run of the Auto-GPT Package](/gitpod.png)
-
-
-## How to get the OpenAI API Key
-
-Follow along the official guide [here](https://significant-gravitas.github.io/Auto-GPT/installation/#:~:text=%F0%9F%92%BE%20Installation-,%E2%9A%A0%EF%B8%8F%20OpenAI%20API%20Keys%20Configuration,-Get%20your%20OpenAI)
-
-
-## How to pass other configuration
-
-To pass any other configuration listed [here](https://github.com/Significant-Gravitas/Auto-GPT/blob/master/.env.template); pass the argument like you pass the `OPENAI_API_KEY`
+For example, this is how you'd pass the `RESTRICT_TO_WORKSPACE` flag:
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "RESTRICT_TO_WORKSPACE": "False"}'
 ```
 
-Note - This package spins up AutoGPT using the `Redis` backend by default. To use the local backend instead set `MEMORY_BACKEND` to `local` in `args`. For `pinecone` and you will need to get API keys for it and pass it. `Weaviate` & `Milvus` are supported both locally & remotely.
+**NOTE:** this package spins up AutoGPT using the `Redis` backend by default. Other backends are available by setting the `MEMORY_BACKEND` parameter in the JSON object you pass in when you run the `kurtosis run` command above. 
 
-To run with an instance of Weaviate inside Docker run this using
+For example, to set the `local` memory backend:
+
+```bash
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "local"}'
+```
+
+To set Weaviate:
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "weaviate"}'
 ```
 
-To get Milvus running inside Docker with the required dependencies use
+To set Milvus:
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "milvus"}'
 ```
 
-## How to get plugins to work
+For `pinecone`, you will need to get API keys for it and pass it.
 
-Kurtosis supports the `ALLOWLISTED_PLUGINS` configuration flag that `AutoGPT` ships with. For example, to run the `AutoGPTTwitter` plugin do the following:
+## Using AutoGPT plugins
+
+Kurtosis supports the `ALLOWLISTED_PLUGINS` configuration flag that AutoGPT ships with. For example, to run the `AutoGPTTwitter` plugin do the following:
 
 ```bash
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter"}'
 ```
 
-To get multiple plugins running at the same time; separate them with comma without spaces like:
+To get multiple plugins running at the same time; separate them with comma without spaces like so:
 
 ```
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "ALLOWLISTED_PLUGINS": "AutoGPTTwitter,AutoGPTEmailPlugin"}'
 ```
 
-Under the hood, Kurtosis will download and install the package for you! As of now the following plugins are supported:
+Under the hood, Kurtosis will download and install the package for you. 
+
+As of now the following plugins are supported:
 
 ### First Party
 - [AutoGPTTwitter](https://github.com/Significant-Gravitas/Auto-GPT-Plugins)
@@ -121,21 +119,22 @@ Under the hood, Kurtosis will download and install the package for you! As of no
 - [AutoGPTNotion](https://github.com/doutv/Auto-GPT-Notion)
 - [SystemInformationPlugin](https://github.com/hdkiller/Auto-GPT-SystemInfo)
 
-To add support for more plugins simply create an issue or create a PR adding an entry to [`plugins.star`](https://github.com/kurtosis-tech/autogpt-package/blob/main/plugins.star). Sometimes the code is better updated than the README with what's supported.
+To add support for more plugins, simply create an issue or create a PR adding an entry to [`plugins.star`](https://github.com/kurtosis-tech/autogpt-package/blob/main/plugins.star).
 
 ## Development
 
-Kurtosis has an extension available on [VSCode](https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension) that allows you to develop Kurtosis
-Starlark more efficiently. While develeoping this package locally run using -
+To develop on this package, clone this repo and run the following:
 
 ```bash
-kurtosis run . --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "weaviate"}'
+kurtosis run . --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
 ```
 
-This would upload the local package and run it instead of pulling it from GitHub.
+Note the `.` - this tells Kurtosis to use the version of the package on your local machine (rather than the version on Github).
+
+Kurtosis also has [an extension available on the VSCode marketplace](https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension) that provides syntax highlighting and autocompletion for the Starlark that this package is composed of.
 
 ## Feedback or Questions?
 
 Let us know in our [Discord](https://discord.gg/eBWFjGtm) or on [Twitter @KurtosisTech](https://twitter.com/KurtosisTech)!
 
-Feel free to create an issue on GitHub if you have any bugs or feature requets.
+Feel free to create an issue on GitHub if you have any bugs or feature requests.
