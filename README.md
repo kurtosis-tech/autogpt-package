@@ -37,6 +37,8 @@
    kurtosis enclave rm -f autogpt
    ```
 
+![Run of the Auto-GPT Package](/gitpod.png)
+
 ## Configuring AutoGPT (including memory backend)
 
 To pass any of the AutoGPT configuration values listed [here](https://github.com/Significant-Gravitas/Auto-GPT/blob/master/.env.template), pass the argument as a property of the JSON object you're passing to Kurtosis just like you passed in `OPENAI_API_KEY`.
