@@ -4,17 +4,16 @@
 
 "It's like AutoGPT got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
 
-**NOTE:** You'll need an OpenAI API key. You can get one [here](https://platform.openai.com/account/api-keys).
-
 ## Run AutoGPT in the browser (no installation needed)
 
 1. If you don't have an OpenAI API key, get one [here](https://platform.openai.com/account/api-keys)
 1. Click [this link](https://gitpod.io/?editor=code#https://github.com/kurtosis-tech/autogpt-package) to open a Gitpod, selecting "Continue" to use the default resources
-1. Once the Gitpod is open, run the following in the terminal (replacing `YOUR_API_KEY_HERE` with your OpenAI API key)
+1. Wait for the Gitpod to boot up and the terminal to finish installing Kurtosis (should take ~30 seconds)
+1. Run the following in the terminal (replacing `YOUR_API_KEY_HERE` with your OpenAI API key)
    ```bash
    kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
    ```
-1. Then, run the following in the terminal to open the AutoGPT prompt:
+1. When installing & starting AutoGPT has finished, run the following in the terminal to open the AutoGPT prompt:
    ```bash
    kurtosis service shell autogpt autogpt --exec "python -m autogpt"
    ```
@@ -30,7 +29,7 @@
    ```bash
    kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE"}'
    ```
-1. Then, run the following in your terminal to open the AutoGPT prompt:
+1. When installing & starting AutoGPT has finished, run the following in your terminal to open the AutoGPT prompt:
    ```bash
    kurtosis service shell autogpt autogpt --exec "python -m autogpt"
    ```
