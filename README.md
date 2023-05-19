@@ -20,6 +20,8 @@
    ```
 1. Use AutoGPT as you please!
 
+![Run of the Auto-GPT Package](/gitpod.png)
+
 ## Run AutoGPT on your machine
 
 1. If you don't have an OpenAI API key, get one [here](https://platform.openai.com/account/api-keys)
@@ -36,8 +38,6 @@
    ```
    kurtosis enclave rm -f autogpt
    ```
-
-![Run of the Auto-GPT Package](/gitpod.png)
 
 ## Configuring AutoGPT (including memory backend)
 
