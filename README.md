@@ -68,7 +68,7 @@ To set Milvus:
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "milvus"}'
 ```
 
-For `pinecone`, you will need to get API keys for it and pass it.
+For `pinecone`, you will need to get [API keys](https://docs.pinecone.io/docs/quickstart#2-get-and-verify-your-pinecone-api-key) for it and pass it.
 
 ## Using AutoGPT plugins
 
