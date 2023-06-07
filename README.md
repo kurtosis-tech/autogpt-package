@@ -48,7 +48,7 @@ For example, this is how you'd pass the `RESTRICT_TO_WORKSPACE` flag:
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "RESTRICT_TO_WORKSPACE": "False"}'
 ```
 
-**NOTE:** this package spins up AutoGPT using the `Redis` backend by default. Other backends are available by setting the `MEMORY_BACKEND` parameter in the JSON object you pass in when you run the `kurtosis run` command above. 
+**NOTE:** this package spins up AutoGPT using the `local` backend by default. Other backends are available by setting the `MEMORY_BACKEND` parameter in the JSON object you pass in when you run the `kurtosis run` command above. 
 
 For example, to set the `local` memory backend:
 
@@ -56,19 +56,7 @@ For example, to set the `local` memory backend:
 kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "local"}'
 ```
 
-To set Weaviate:
-
-```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "weaviate"}'
-```
-
-To set Milvus:
-
-```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "milvus"}'
-```
-
-For `pinecone`, you will need to get [API keys](https://docs.pinecone.io/docs/quickstart#2-get-and-verify-your-pinecone-api-key) for it and pass it.
+**NOTE**: Redis isn't working with 0.4.0 for now
 
 ## Using AutoGPT plugins
 

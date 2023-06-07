@@ -1,7 +1,6 @@
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star")
-milvus = import_module("github.com/kurtosis-tech/autogpt-package/src/milvus.star")
 
 AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.0"
 REDIS_IMAGE = "redis/redis-stack-server:latest"
@@ -81,8 +80,6 @@ def run(plan, args):
     if "USE_WEB_BROWSER" not in env_vars:
         env_vars["USE_WEB_BROWSER"] = DEFAULT_WEB_BROWSER
 
-    is_memory_backend_milvus = False
-
     if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "redis":
         env_vars["MEMORY_BACKEND"] = "redis"
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
@@ -98,7 +95,7 @@ def run(plan, args):
     elif env_vars.get("MEMORY_BACKEND", "local"):
         plan.print("Using the local memory backend")
     else:
-        plan.print("Memory backend needs to be one of redis, local, weaviate, milvus or piencone. We default to redis if nothing is specified. Got '{0}' which isn't a valid value".format(env_vars["MEMORY_BACKEND"]))
+        plan.print("Memory backend needs to be one of redis, local. We default to local if nothing is specified. Got '{0}' which isn't a valid value".format(env_vars["MEMORY_BACKEND"]))
 
     plan.print("Starting AutoGpt with environment variables set to\n{0}".format(env_vars))
 
@@ -118,22 +115,6 @@ def run(plan, args):
             command = ["/bin/sh", "-c", init_env_file_command]
         )
     )
-
-    if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
-        plan.exec(
-            service_name = AUTOGPT_SERVICE_NAME,
-            recipe = ExecRecipe(
-                command = ["pip", "install", "weaviate-client"]
-            )
-        )
-        
-    if is_memory_backend_milvus:
-        plan.exec(
-            service_name = AUTOGPT_SERVICE_NAME,
-            recipe = ExecRecipe(
-                command = ["pip", "install", "pymilvus"]
-            )
-        )
 
     if ALLOW_LISTED_PLUGINS_ENV_VAR_KEY in env_vars:
         plan.exec(
