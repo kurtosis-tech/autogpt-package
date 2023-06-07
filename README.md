@@ -4,6 +4,8 @@
 
 "It's like AutoGPT got a `brew install`", made possible by [Kurtosis](https://www.kurtosis.com/).
 
+**NOTE**: This now runs with 0.4.0 that drops support for Milvus, Weaviate and PineCone. You can run Kurtosis against 0.3.1 by doing `kurtosis run github.com/kurtosis-tech/autogpt-package@0.3.1`
+
 ## Run AutoGPT in the browser (no installation needed)
 
 1. If you don't have an OpenAI API key, get one [here](https://platform.openai.com/account/api-keys)
