@@ -1,9 +1,8 @@
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star")
-milvus = import_module("github.com/kurtosis-tech/autogpt-package/src/milvus.star")
 
-AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.3.1"
+AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.0"
 REDIS_IMAGE = "redis/redis-stack-server:latest"
 WEAVIATE_IMAGE = "semitechnologies/weaviate:1.18.3"
 
@@ -81,50 +80,7 @@ def run(plan, args):
     if "USE_WEB_BROWSER" not in env_vars:
         env_vars["USE_WEB_BROWSER"] = DEFAULT_WEB_BROWSER
 
-    is_memory_backend_milvus = False
-
-    if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
-        plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-        if "USE_WEAVIATE_EMBEDDED" in env_vars and env_vars["USE_WEAVIATE_EMBEDDED"] == "True":
-            plan.print("The weaviate backend will be running in embedded mode; not starting a separate container")
-        elif "WEAVIATE_HOST" in env_vars and "WEAVIATE_PORT" in env_vars:
-            plan.print("We're using the Weaviate at {}:{}. Please make sure that you have also provided the right values for WEAVIATE_USERNAME, WEAVIATE_PASSWORD, WEAVIATE_API_KEY as needed".format(env_vars["WEAVIATE_HOST"], env_vars["WEAVIATE_PORT"]))
-        else:
-            weaviate = launch_weaviate(plan)
-            weaviate_args_to_add_if_they_dont_exist = {}
-            weaviate_args_to_add_if_they_dont_exist["WEAVIATE_HOST"] = weaviate.ip_address
-            weaviate_args_to_add_if_they_dont_exist["WEAVIATE_PORT"] = str(WEAVIATE_PORT)
-            weaviate_args_to_add_if_they_dont_exist["WEAVIATE_PROTOCOL"] = WEAVIATE_PORT_PROTOCOL
-            weaviate_args_to_add_if_they_dont_exist["WEAVIATE_USERNAME"] = ""
-            weaviate_args_to_add_if_they_dont_exist["WEAVIATE_PASSWORD"] = ""
-            weaviate_args_to_add_if_they_dont_exist["WEAVIATE_API_KEY"] = ""
-            weaviate_args_to_add_if_they_dont_exist["MEMORY_INDEX"] = "AutoGPT"
-            # if the user just passes "weaviate" without setting any args we just set everything up for them
-            # otherwise the user might provide an online address or something which we preserve
-            for weaviate_arg_key, weaviate_arg_value in weaviate_args_to_add_if_they_dont_exist.items():
-                if weaviate_arg_key not in env_vars:
-                    env_vars[weaviate_arg_key] = weaviate_arg_value
-    elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "milvus":
-        is_memory_backend_milvus = True
-        plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
-
-        if "MILVUS_ADDR" in env_vars and env_vars["MILVUS_ADDR"] != "":
-            plan.print("Using Milvus from the cloud on address '{}'".format(env_vars["MILVUS_ADDR"]))
-            
-            milvus_required_args = ["MILVUS_USERNAME", "MILVUS_PASSWORD"]
-            for env_var_key in milvus_required_args:
-                if env_var_key not in env_vars:
-                    plan.print("{0} are required keys for Milvus in the cloud. Seems like one of them is missing.")
-                    fail("{0} is a required env var that needs to be set for Milvus in the cloud to work but was missing".format(env_var_key))
-
-        else:
-            plan.print("Preparing for using Milvus locally")
-            milvus_address = milvus.launch(plan)
-            env_vars["MILVUS_ADDR"] = milvus_address
-
-        env_vars["MILVUS_SECURE"] = str(False)
-        env_vars["MILVUS_COLLECTION"] = "autogpt"
-    elif env_vars.get("MEMORY_BACKEND", "redis") == "redis":
+    if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "redis":
         env_vars["MEMORY_BACKEND"] = "redis"
         plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
         if "REDIS_HOST" in env_vars and "REDIS_PORT" in env_vars:
@@ -136,10 +92,10 @@ def run(plan, args):
             env_vars["REDIS_HOST"] = redis_server["hostname"]
             env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
             env_vars["REDIS_PASSWORD"] = ""
-    elif "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"]in ("local", "pinecone"):
-        plan.print("Using the '{0}' memory backend".format(env_vars["MEMORY_BACKEND"]))
+    elif env_vars.get("MEMORY_BACKEND", "local"):
+        plan.print("Using the local memory backend")
     else:
-        plan.print("Memory backend needs to be one of redis, local, weaviate, milvus or piencone. We default to redis if nothing is specified. Got '{0}' which isn't a valid value".format(env_vars["MEMORY_BACKEND"]))
+        plan.print("Memory backend needs to be one of redis, local. We default to local if nothing is specified. Got '{0}' which isn't a valid value".format(env_vars["MEMORY_BACKEND"]))
 
     plan.print("Starting AutoGpt with environment variables set to\n{0}".format(env_vars))
 
@@ -152,13 +108,6 @@ def run(plan, args):
         )
     )
 
-    plan.exec(
-        service_name = AUTOGPT_SERVICE_NAME,
-        recipe = ExecRecipe(
-            command = ["mkdir", "/app/data"],
-        )
-    )
-
     init_env_file_command = "echo '{0}' > /app/.env".format("\n".join(["{0}={1}".format(k, v) for (k, v) in env_vars.items()]))
     plan.exec(
         service_name = "autogpt",
@@ -166,22 +115,6 @@ def run(plan, args):
             command = ["/bin/sh", "-c", init_env_file_command]
         )
     )
-
-    if "MEMORY_BACKEND" in env_vars and env_vars["MEMORY_BACKEND"] == "weaviate":
-        plan.exec(
-            service_name = AUTOGPT_SERVICE_NAME,
-            recipe = ExecRecipe(
-                command = ["pip", "install", "weaviate-client"]
-            )
-        )
-        
-    if is_memory_backend_milvus:
-        plan.exec(
-            service_name = AUTOGPT_SERVICE_NAME,
-            recipe = ExecRecipe(
-                command = ["pip", "install", "pymilvus"]
-            )
-        )
 
     if ALLOW_LISTED_PLUGINS_ENV_VAR_KEY in env_vars:
         plan.exec(
