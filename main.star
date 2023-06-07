@@ -111,13 +111,6 @@ def run(plan, args):
         )
     )
 
-    plan.exec(
-        service_name = AUTOGPT_SERVICE_NAME,
-        recipe = ExecRecipe(
-            command = ["mkdir", "/app/data"],
-        )
-    )
-
     init_env_file_command = "echo '{0}' > /app/.env".format("\n".join(["{0}={1}".format(k, v) for (k, v) in env_vars.items()]))
     plan.exec(
         service_name = "autogpt",
