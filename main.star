@@ -96,7 +96,7 @@ def run(plan, args):
             env_vars["REDIS_PORT"] =  str(redis_server["client-port"])
             env_vars["REDIS_PASSWORD"] = ""
     elif env_vars.get("MEMORY_BACKEND", "local"):
-        plan.print("Using the '{0}' memory backend".format(local))
+        plan.print("Using the local memory backend")
     else:
         plan.print("Memory backend needs to be one of redis, local, weaviate, milvus or piencone. We default to redis if nothing is specified. Got '{0}' which isn't a valid value".format(env_vars["MEMORY_BACKEND"]))
 
