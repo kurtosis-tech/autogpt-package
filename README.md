@@ -52,10 +52,10 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 
 **NOTE:** this package spins up AutoGPT using the `local` backend by default. Other backends are available by setting the `MEMORY_BACKEND` parameter in the JSON object you pass in when you run the `kurtosis run` command above. 
 
-For example, to set the `local` memory backend:
+For example, to set the `redis` memory backend:
 
 ```bash
-kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "local"}'
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "MEMORY_BACKEND": "redis"}'
 ```
 
 **NOTE**: Redis isn't working with 0.4.0 for now
