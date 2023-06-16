@@ -33,7 +33,11 @@
    ```
 1. When installing & starting AutoGPT has finished, run the following in your terminal to open the AutoGPT prompt:
    ```bash
-   kurtosis service shell autogpt autogpt --exec "python -m autogpt"
+   kurtosis service shell autogpt autogpt
+   ```
+and then within the prompt:
+   ```bash
+   > python -m autogpt
    ```
 1. Use AutoGPT as you please! To destroy the AutoGPT instance, run:
    ```
