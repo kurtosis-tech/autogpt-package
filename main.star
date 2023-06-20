@@ -26,7 +26,46 @@ DEFAULT_WEB_BROWSER = "firefox"
 
 ALLOW_LISTED_PLUGINS_ENV_VAR_KEY = 'ALLOWLISTED_PLUGINS'
 
+# Replace OpenAI with GPT4All
+GPT4_ALL_ARG = "gpt_4all"
+LOCAL_AI_IMAGE = "quay.io/go-skynet/local-ai:latest"
+LOCAL_AI_SERVICE = "local-ai"
+MODEL_URL = "https://gpt4all.io/models/ggml-gpt4all-j.bin"
+
 def run(plan, args):
+
+    is_gpt4all = args.get(GPT4_ALL_ARG, False)
+    if is_gpt4all:
+        local_ai_service = plan.add_service(
+            name = LOCAL_AI_SERVICE,
+            config = ServiceConfig(
+                image = LOCAL_AI_IMAGE,
+                ports = {
+                    "http": PortSpec(number = 8080, transport_protocol="TCP", wait=None)
+                },
+            )
+        )
+        plan.print("Downloading the model; this will take a while as its 3GB")
+        plan.exec(
+            service_name=LOCAL_AI_SERVICE,
+            recipe = ExecRecipe(
+                command = ["wget", MODEL_URL, "-O", "/models/ggml-gpt4all-j"]
+            )
+        )
+        plan.wait(
+            recipe = GetHttpRequestRecipe(
+                port_id="http",
+                endpoint="/v1/models",
+                extract={
+                    "model-id": ".data[0].id",
+                }
+            ),
+            field = "extract.model-id",
+            assertion = "==",
+            target_value= "ggml-gpt4all-j",
+            timeout="5m"
+        )
+
 
     if OPENAI_API_KEY_ARG not in args:
         fail("{0} is a required argument that needs to be passed to this script".format(OPENAI_API_KEY_ARG))
