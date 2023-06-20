@@ -116,6 +116,23 @@ As of now the following plugins are supported:
 
 To add support for more plugins, simply create an issue or create a PR adding an entry to [`plugins.star`](https://github.com/kurtosis-tech/autogpt-package/blob/main/plugins.star).
 
+## Run without OpenAI
+
+We understand OpenAI can be expensive for some people; more-ever some people might be trying to use this with their own models. AutoGPT-Package supports running AutoGPT against a `GPT4All` model that runs via `LocalAI`. To use a local model -
+
+```bash
+kurtosis run github.com/kurtosis-tech/autogpt-package '{"GPT_4ALL": true}'
+```
+
+This uses the `https://gpt4all.io/models/ggml-gpt4all-j.bin` model default
+
+To use a different model try the `MODEL_URL` parameter like -
+
+
+```bash
+kurtosis run github.com/kurtosis-tech/autogpt-package '{"GPT_4ALL": true, "MODEL_URL": "https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin"}'
+```
+
 ## Development
 
 To develop on this package, clone this repo and run the following:

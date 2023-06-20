@@ -2,9 +2,8 @@ redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star")
 
-AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.0"
+AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.2"
 REDIS_IMAGE = "redis/redis-stack-server:latest"
-WEAVIATE_IMAGE = "semitechnologies/weaviate:1.18.3"
 
 AUTOGPT_SERVICE_NAME = "autogpt"
 
@@ -26,7 +25,57 @@ DEFAULT_WEB_BROWSER = "firefox"
 
 ALLOW_LISTED_PLUGINS_ENV_VAR_KEY = 'ALLOWLISTED_PLUGINS'
 
+# Replace OpenAI with GPT4All
+GPT4_ALL_ARG = "GPT_4ALL"
+MODEL_ARG = "GPT_4ALL_CUSTOM_MODEL_URL"
+LOCAL_AI_IMAGE = "quay.io/go-skynet/local-ai:latest"
+LOCAL_AI_SERVICE = "local-ai"
+DEFAULT_MODEL_URL = "https://gpt4all.io/models/ggml-gpt4all-j.bin"
+
 def run(plan, args):
+
+    is_gpt4all = args.get(GPT4_ALL_ARG, False)
+    if is_gpt4all:
+        local_ai_service = plan.add_service(
+            name = LOCAL_AI_SERVICE,
+            config = ServiceConfig(
+                image = LOCAL_AI_IMAGE,
+                ports = {
+                    "http": PortSpec(number = 8080, transport_protocol="TCP", wait=None)
+                },
+            )
+        )
+        plan.print("Downloading the model; this will take a while")
+        model_url = args.get(MODEL_ARG, DEFAULT_MODEL_URL)
+        model_name = model_url.split("/")[-1]
+        # AutoGPT checks for this
+        model_name = "gpt-3.5-turbo"
+        wget_str = " ".join(["wget", model_url, "-O", "models/{0}".format(model_name)])
+        plan.exec(
+            service_name=LOCAL_AI_SERVICE,
+            recipe = ExecRecipe(
+                command = ["/bin/sh", "-c", "mkdir models/ && " + wget_str + " > /dev/null 2>&1"] 
+            )
+        )
+        plan.wait(
+            service_name=LOCAL_AI_SERVICE,
+            recipe = GetHttpRequestRecipe(
+                port_id="http",
+                endpoint="/v1/models",
+                extract={
+                    "model-id": ".data[0].id",
+                }
+            ),
+            field = "extract.model-id",
+            assertion = "==",
+            target_value=model_name,
+            timeout="5m"
+        )
+        if OPENAI_API_KEY_ARG not in args:
+            args[OPENAI_API_KEY_ARG] = "sk---anystirnghere"
+        args["OPENAI_API_BASE_URL"] = "http://{}:8080/v1".format(local_ai_service.ip_address)
+        args["SMART_LLM_MODEL"] = model_name
+
 
     if OPENAI_API_KEY_ARG not in args:
         fail("{0} is a required argument that needs to be passed to this script".format(OPENAI_API_KEY_ARG))
@@ -141,25 +190,6 @@ def run(plan, args):
             download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
             install_plugins(plan)
 
-def launch_weaviate(plan):
-    weaviate = plan.add_service(
-        name = "weaviate",
-        config = ServiceConfig(
-            image = WEAVIATE_IMAGE,
-            ports = {
-                WEAVIATE_PORT_ID: PortSpec(number = WEAVIATE_PORT, transport_protocol = "TCP")
-            },
-            env_vars = {
-                "QUERY_DEFAULTS_LIMIT": str(25),
-                "AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED": 'true',
-                "PERSISTENCE_DATA_PATH": '/var/lib/weaviate',
-                "DEFAULT_VECTORIZER_MODULE": 'none',
-                "CLUSTER_HOSTNAME": 'node1'
-            }
-        )
-    )
-
-    return weaviate
 
 def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
