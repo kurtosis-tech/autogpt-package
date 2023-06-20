@@ -27,7 +27,7 @@ ALLOW_LISTED_PLUGINS_ENV_VAR_KEY = 'ALLOWLISTED_PLUGINS'
 
 # Replace OpenAI with GPT4All
 GPT4_ALL_ARG = "GPT_4ALL"
-MDOEL_ARG = "GPT_4ALL_CUSTOM_MODEL_URL"
+MODEL_ARG = "GPT_4ALL_CUSTOM_MODEL_URL"
 LOCAL_AI_IMAGE = "quay.io/go-skynet/local-ai:latest"
 LOCAL_AI_SERVICE = "local-ai"
 # different script uses https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin
@@ -47,11 +47,11 @@ def run(plan, args):
             )
         )
         plan.print("Downloading the model; this will take a while as its 3GB")
-        model_url = args.get(MDOEL_ARG, DEFAULT_MODEL_URL)
+        model_url = args.get(MODEL_ARG, DEFAULT_MODEL_URL)
         plan.exec(
             service_name=LOCAL_AI_SERVICE,
             recipe = ExecRecipe(
-                command = ["wget", MODEL_URL, "-O", "/models/ggml-gpt4all-j"]
+                command = ["wget", model_url, "-O", "/models/ggml-gpt4all-j"]
             )
         )
         plan.wait(
