@@ -55,6 +55,7 @@ def run(plan, args):
             )
         )
         plan.wait(
+            service_name=LOCAL_AI_SERVICE,
             recipe = GetHttpRequestRecipe(
                 port_id="http",
                 endpoint="/v1/models",
