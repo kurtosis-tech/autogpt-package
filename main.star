@@ -48,7 +48,7 @@ def run(plan, args):
         )
         plan.print("Downloading the model; this will take a while")
         model_url = args.get(MODEL_ARG, DEFAULT_MODEL_URL)
-        wget_str = " ".join(["wget", model_url, "-O", "/models/ggml-gpt4all-j"])
+        wget_str = " ".join(["wget", model_url, "-O", "models/ggml-gpt4all-j"])
         plan.exec(
             service_name=LOCAL_AI_SERVICE,
             recipe = ExecRecipe(
