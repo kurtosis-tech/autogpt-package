@@ -48,7 +48,9 @@ def run(plan, args):
         )
         plan.print("Downloading the model; this will take a while")
         model_url = args.get(MODEL_ARG, DEFAULT_MODEL_URL)
-        wget_str = " ".join(["wget", model_url, "-O", "models/ggml-gpt4all-j"])
+        model_name = model_url.split("/")[-1]
+        model_name = model_name.replace(".bin", "")
+        wget_str = " ".join(["wget", model_url, "-O", "models/{0}".format(model_name)])
         plan.exec(
             service_name=LOCAL_AI_SERVICE,
             recipe = ExecRecipe(
@@ -66,7 +68,7 @@ def run(plan, args):
             ),
             field = "extract.model-id",
             assertion = "==",
-            target_value= "ggml-gpt4all-j",
+            target_value=model_name,
             timeout="5m"
         )
         if OPENAI_API_KEY_ARG not in args:
