@@ -2,7 +2,7 @@ redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
 plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star")
 
-AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.0"
+AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.2"
 REDIS_IMAGE = "redis/redis-stack-server:latest"
 
 AUTOGPT_SERVICE_NAME = "autogpt"
@@ -30,7 +30,6 @@ GPT4_ALL_ARG = "GPT_4ALL"
 MODEL_ARG = "GPT_4ALL_CUSTOM_MODEL_URL"
 LOCAL_AI_IMAGE = "quay.io/go-skynet/local-ai:latest"
 LOCAL_AI_SERVICE = "local-ai"
-# different script uses https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin
 DEFAULT_MODEL_URL = "https://gpt4all.io/models/ggml-gpt4all-j.bin"
 
 def run(plan, args):
@@ -49,7 +48,8 @@ def run(plan, args):
         plan.print("Downloading the model; this will take a while")
         model_url = args.get(MODEL_ARG, DEFAULT_MODEL_URL)
         model_name = model_url.split("/")[-1]
-        model_name = model_name.replace(".bin", "")
+        # AutoGPT checks for this
+        model_name = "gpt-3.5-turbo"
         wget_str = " ".join(["wget", model_url, "-O", "models/{0}".format(model_name)])
         plan.exec(
             service_name=LOCAL_AI_SERVICE,
@@ -73,7 +73,8 @@ def run(plan, args):
         )
         if OPENAI_API_KEY_ARG not in args:
             args[OPENAI_API_KEY_ARG] = "test-key"
-        args["OPENAI_API_BASE"] = "http://{}:8080".format(local_ai_service.ip_address)
+        args["OPENAI_API_BASE_URL"] = "http://{}:8080/v1".format(local_ai_service.ip_address)
+        args["SMART_LLM_MODEL"] = model_name
 
 
     if OPENAI_API_KEY_ARG not in args:
