@@ -72,7 +72,7 @@ def run(plan, args):
             timeout="5m"
         )
         if OPENAI_API_KEY_ARG not in args:
-            args[OPENAI_API_KEY_ARG] = "test-key"
+            args[OPENAI_API_KEY_ARG] = "sk---anystirnghere"
         args["OPENAI_API_BASE_URL"] = "http://{}:8080/v1".format(local_ai_service.ip_address)
         args["SMART_LLM_MODEL"] = model_name
 
