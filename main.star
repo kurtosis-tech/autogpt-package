@@ -4,7 +4,6 @@ common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star
 
 AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.0"
 REDIS_IMAGE = "redis/redis-stack-server:latest"
-WEAVIATE_IMAGE = "semitechnologies/weaviate:1.18.3"
 
 AUTOGPT_SERVICE_NAME = "autogpt"
 
@@ -30,6 +29,7 @@ ALLOW_LISTED_PLUGINS_ENV_VAR_KEY = 'ALLOWLISTED_PLUGINS'
 GPT4_ALL_ARG = "gpt_4all"
 LOCAL_AI_IMAGE = "quay.io/go-skynet/local-ai:latest"
 LOCAL_AI_SERVICE = "local-ai"
+# different script uses https://gpt4all.io/models/ggml-gpt4all-l13b-snoozy.bin
 MODEL_URL = "https://gpt4all.io/models/ggml-gpt4all-j.bin"
 
 def run(plan, args):
@@ -65,6 +65,9 @@ def run(plan, args):
             target_value= "ggml-gpt4all-j",
             timeout="5m"
         )
+        if OPENAI_API_KEY_ARG not in args:
+            args[OPENAI_API_KEY_ARG] = "test-key"
+        args["OPENAI_API_BASE"] = "http://{}:8080".format(local_ai_service.ip_address)
 
 
     if OPENAI_API_KEY_ARG not in args:
@@ -180,25 +183,6 @@ def run(plan, args):
             download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use, plugin_repo_to_use)
             install_plugins(plan)
 
-def launch_weaviate(plan):
-    weaviate = plan.add_service(
-        name = "weaviate",
-        config = ServiceConfig(
-            image = WEAVIATE_IMAGE,
-            ports = {
-                WEAVIATE_PORT_ID: PortSpec(number = WEAVIATE_PORT, transport_protocol = "TCP")
-            },
-            env_vars = {
-                "QUERY_DEFAULTS_LIMIT": str(25),
-                "AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED": 'true',
-                "PERSISTENCE_DATA_PATH": '/var/lib/weaviate',
-                "DEFAULT_VECTORIZER_MODULE": 'none',
-                "CLUSTER_HOSTNAME": 'node1'
-            }
-        )
-    )
-
-    return weaviate
 
 def download_plugins(plan, plugins_dir, plugins_to_download, plugin_branch_to_use=None, plugin_repo_to_use = None):
     for plugin in plugins_to_download:
