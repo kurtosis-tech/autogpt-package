@@ -64,6 +64,11 @@ kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENA
 
 **NOTE**: Redis isn't working with 0.4.0 for now
 
+To run with a different image other than the one hardcoded in `main.star` use
+```bash
+kurtosis run github.com/kurtosis-tech/autogpt-package --enclave autogpt '{"OPENAI_API_KEY": "YOUR_API_KEY_HERE", "AUTOGPT_IMAGE": "significantgravitas/auto-gpt:v0.4.0"}'
+```
+
 ## Using AutoGPT plugins
 
 Kurtosis supports the `ALLOWLISTED_PLUGINS` configuration flag that AutoGPT ships with. For example, to run the `AutoGPTTwitter` plugin do the following:

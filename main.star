@@ -3,6 +3,7 @@ plugins = import_module("github.com/kurtosis-tech/autogpt-package/plugins.star")
 common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star")
 
 AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.2"
+AUTOGPT_IMAGE_ARG = "AUTOGPT_IMAGE"
 REDIS_IMAGE = "redis/redis-stack-server:latest"
 
 AUTOGPT_SERVICE_NAME = "autogpt"
@@ -148,10 +149,12 @@ def run(plan, args):
 
     plan.print("Starting AutoGpt with environment variables set to\n{0}".format(env_vars))
 
+    autogpt_image = args.get(AUTOGPT_IMAGE_ARG, AUTOGPT_IMAGE)
+
     plan.add_service(
         name = AUTOGPT_SERVICE_NAME,
         config = ServiceConfig(
-            image = AUTOGPT_IMAGE,
+            image = autogpt_image,
             entrypoint = ["sleep", "9999999"],
             env_vars = env_vars,
         )
