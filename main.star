@@ -96,12 +96,18 @@ def run(plan, args):
     for env_var_key, env_var_value in args.items():
         if env_var_key in ARGS_TO_SKIP_FOR_ENV_VARS:
             continue
-        env_vars[env_var_key] = str(env_var_value)
+        if env_var_key == ALLOW_LISTED_PLUGINS_ENV_VAR_KEY and type(env_var_value) == "list":
+            # arg items expects the values to be the string
+            # so if user input is a list, convert it into a string which can
+            # be parsed later
+            env_vars[env_var_key] = (",").join(env_var_value)
+        else:
+            env_vars[env_var_key] = str(env_var_value)
     
     plugins_dir = env_vars.get("PLUGINS_DIR", DEFAULT_PLUGINS_DIRNAME)
 
-    if ALLOW_LISTED_PLUGINS_ENV_VAR_KEY in env_vars:
 
+    if ALLOW_LISTED_PLUGINS_ENV_VAR_KEY in env_vars:      
         plugins_names = env_vars[ALLOW_LISTED_PLUGINS_ENV_VAR_KEY].split(',')
 
         # validate plugins names
