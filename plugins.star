@@ -1,4 +1,4 @@
-common = import_module("github.com/kurtosis-tech/autogpt-package/src/common.star")
+common = import_module("/src/common.star")
 
 MAIN_BRANCH = "main"
 MASTER_BRANCH = "master"
