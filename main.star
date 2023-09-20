@@ -1,6 +1,6 @@
 redis_module = import_module("github.com/kurtosis-tech/redis-package/main.star")
-plugins = import_module("/plugins.star")
-common = import_module("/src/common.star")
+plugins = import_module("./plugins.star")
+common = import_module("./src/common.star")
 
 AUTOGPT_IMAGE = "significantgravitas/auto-gpt:v0.4.2"
 AUTOGPT_IMAGE_ARG = "AUTOGPT_IMAGE"
